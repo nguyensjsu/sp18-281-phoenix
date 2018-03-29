@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- mata tag below make the page responsive on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
+  <meta name="twitter:widgets:theme" content="dark">
+  <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Locations</title>
+  <link rel="shortcut icon" href="images/starbucks_icon.ico" type="image/x-icon">
+  <!-- Bootstrap -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link href="bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">  
+  <link href="css/style.css" rel="stylesheet">  
+
+
+
+</head>
+<body onload="loadLocations();">   
+  
+  <header >
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="js-header">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="nav navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#top"><img class="" src="images/starbucks.png" width="20%" height="20%" style="margin: 10px;"/></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">    
+          <ul class="nav navbar-nav navbar-brand">
+            <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>  
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span> Order <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="order_place.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Place Order</a></li>
+                <li><a href="order_update.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Update Order</a></li>
+                <li><a href="order_cancel.html"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel Order</a></li>
+              </ul>
+            </li>
+            <li><a href="status.html"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Status</a></li>  
+            <li><a href="locations.html"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Locations</a></li>  
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> About Us <span class="caret"></span></a>
+              <ul class="dropdown-menu">              
+                <li><a href="contacts.html"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Contact Us</a></li>    
+                <li><a href="#"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> About 1</a></li>      
+                <li><a href="#"><span class="glyphicon glyphicon-king" aria-hidden="true"></span> About 2</a></li>      
+              </ul>
+            </li>               
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  </header>
+
+  <div class="gap"></div>  
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading" align="center">
+        <font size="6">Locations</font>
+      </div>
+      <div class="panel-body">
+        <div class="container" id="mainContainer">
+    <div class="row">
+      <section class="col-md-6">
+        <div id="map1info"></div>
+        <div id="map1"></div>
+      </section>  
+    </div>
+  </div>
+      </div>
+    </div>       
+  </div>
+  
+  <footer class="container-fluid">
+    <div class="row">
+        <img src="images/sjsu.png" alt="sjsu" class="img-responsive" />
+    </div>
+    <div class="row">
+        <p id="copyright">Copyright © <script type="text/javascript">
+          var d = new Date()
+          document.write(d.getFullYear())
+          </script> · CMPE 281- Team Hackathon Project · All Rights Reserved </p>
+    </div>        
+  </footer>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js"> </script> 
+    <script src="js/myscript.js"></script>  
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script>
+      //GoogleMaps     
+    function loadLocations() {   
+      var contentStringMap1 = 
+            '<h4 style="color:red;">CHARLES W. DAVIDSON - COLLEGE OF ENGINEERING</h4>' +
+            '<h4 style="color:red; padding-top:none;">SAN JOSÉ STATE UNIVERSITY</h4>' +
+            '<h5>One Washington Square, </h5>' +
+            '<h7>San José, CA 95192</h7>';
+      document.getElementById('map1info').innerHTML = contentStringMap1;
+      var coordinatesMap1 = { lat: 37.3352, lng: -121.881 };
+      var map1 = new google.maps.Map(document.getElementById('map1'), {
+        zoom: 11,
+        center: coordinatesMap1,
+        scrollwheel: true
+      });
+      var marker1 = new google.maps.Marker({            
+        map: map1,
+        position: coordinatesMap1,
+        icon: new google.maps.MarkerImage("http://maps.google.com/mapfiles/ms/icons/red.png"),
+        animation: google.maps.Animation.DROP,  
+        title: 'Research Center'
+      });
+      attachMsg("map1", marker1, contentStringMap1);
+    }    
+
+    function attachMsg(map, marker, message) {
+      var infowindow = new google.maps.InfoWindow({
+        content: message
+      });
+
+      marker.addListener('mouseover', function() {
+        infowindow.open(marker.get(map), marker);
+      });
+
+      marker.addListener('mouseout', function() {
+        infowindow.close();
+      });
+    }  
+  </script>
+
+
+</body>
+</html>
