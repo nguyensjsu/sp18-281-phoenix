@@ -8,3 +8,6 @@ To start with the we decided to go with the Starbucks online application. Togeth
 March 30, 2018
   -We completed basic frontend UI template pages for the starbucks application. we each are going to work and complete individual pages for different feartures like order page, update order page, locations, etc.
   -We are also discussing what architecture and deployment strategies to use in order to achieve high AKF cube scaling
+
+April 2, 2018
+We read through the article: https://www.benefitfocus.com/blogs/design-engineering/architecture-cubed and began to decide the architecture which we are going to implement. Apart from that we decided to use NodeJS as part of our frontend which will be deployed on EC2 instances along with load balancer and auto scailing group.
