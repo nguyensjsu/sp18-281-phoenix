@@ -1,0 +1,11 @@
+{
+  "name": "starbucks",
+  "description": "CMPE281 - Team Hackathon",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "fs": "0.0.2",
+    "node-rest-client": "1.4.1"
+  }
+}
