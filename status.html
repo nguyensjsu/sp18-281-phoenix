@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
   <meta name="twitter:widgets:theme" content="dark">
   <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <title>Home</title>
+  <title>Order Status</title>
   <link rel="shortcut icon" href="images/starbucks_icon.ico" type="image/x-icon">
   <!-- Bootstrap -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -41,7 +41,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> About Us <span class="caret"></span></a>
               <ul class="dropdown-menu">      
                 <li><a href="#"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> About Us</a></li>      
-                <li><a href="contacts.html"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Contact Us</a></li>         
+                <li><a href="contacts.html"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Contact Us</a></li>          
               </ul>
             </li>               
           </ul>
@@ -56,52 +56,23 @@
       <div class="panel-heading" align="center">
         <font size="6">Starbucks</font>
       </div>
-
-        <P align="left"><strong>General Menu</strong></p>
-
       <div class="panel-body">
 
-      
-
-
-        <div class="row">
-            <img src="images/blonde_caffe_latte.jpg" alt="blonde_caffe_latte" align="left" height="15%" width="15%"/>
-            <p align ="center"><strong> Blonde Caffe Latte </strong> </p>
-            <p align ="center">Our seriously smooth and subtly sweet Starbucks® Blonde Espresso is balanced with steamed milk and a light layer of foam.</p>
-            <button type="submit" align= "center" style="background-color:green">Place Order!</button>
-
+        <div class="panel panel-success">
+          <div>
+            <font size="6">Past Orders</font>
           </div>
+          <form class="bootstrap-form-with-validation">
+            <h2 class="text-center"></h2>
+            <div class="form-group"><label for="text-input" style="padding-left: 10px;padding-bottom: 20px">Search by Order Number / Your Name</label>
+              <div style="padding-left: 10px;">
+                <div style="display: inline-block;"><input class="form-control" type="text" name="text-input" id="text-input" style="min-width: 300px;"></div>
+                <div style="display: inline-block;"><button class="btn btn-success" type="submit" style="display: inline-block;background-color: #036635;border-radius: 10px;">Submit</button></div>
+              </div>
+            </div>
+          </form>
 
-
-
-      <div class="row">
-            <img src="images/ice_beverage.jpg" alt="ice_beverage" align= "left" height="15%" width="15%"/>
-            <p align = "center"><strong> Ice Beverage  </strong> </p>
-            <p align="center">Made with the rich, full-bodied espresso you love that's been chilled and mellowed with a touch of milk and lightly sweetened, this drink is delightfully convenient.</p>
-            <button type="submit" align= "center" style="background-color:green">Place Order!</button>
-
-      </div>
-
-
-
-          <div class="row">
-            <img src="images/Latte_Macchiato.jpg" alt="Latte_Macchiato"  align= "left" height="15%" width="15%"/>
-            <p align="center"><strong> Latte Macchiato </strong></p>
-            <p align="center">This espresso classic has espresso shots slowly poured over lightly aerated milk for a bold and roasty new way to sip.</p>
-            <button type="submit" align= "center" style="background-color:green "">Place Order!</button>
-          </div> 
-          <div class="row">
-            <img src="images/strawberry_creme.jpg" alt="strawberry_creme"  align= "left" height="15%" width="15%"/>
-            <p align = "center"><strong>Strawberry Creme</strong></p>
-            <p align="center">Strawberries and milk are blended with ice and topped with a swirl of whipped cream. Sip on the crème of the crop.</p>
-            <button type="submit" align= "center" style="background-color:green" >Place Order!</button>
- 
-          </div>
-</div>
-      </div>
-</div>
-</div>
-        
+        </div>
         
       </div>
     </div>       
