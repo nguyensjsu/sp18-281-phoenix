@@ -86,12 +86,33 @@
         <div id="map3info"></div>
         <div style="padding-top: 5px;margin-bottom: 20px;">
             <button class="btn btn-success" type="submit" onclick="setStore('Mountain View')" style="background-color: #036635;border-radius: 10px;" name="store" value="Mountain View">Select this store!</button>
-          </div>
+        </div>
         <div id="map3"></div>
       </section>
     </div>
   </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Store Selected</h4>
+        </div>
+        <div class="modal-body">
+          <p id="store_selected_modal_body">Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" style="background-color: #036635;border-radius: 10px;">Close</button>
+        </div>
+      </div>
+      
     </div>
   </div>
 
@@ -193,6 +214,8 @@
     function setStore(name){
       sessionStorage.setItem("storeLocation", name);
       document.getElementById("selected_store").innerHTML = "My Store: "+sessionStorage.getItem("storeLocation");
+      document.getElementById("store_selected_modal_body").innerHTML = sessionStorage.getItem("storeLocation")+ " is set as your current store.";
+      $('#myModal').modal('toggle');
     }
   </script>
 
