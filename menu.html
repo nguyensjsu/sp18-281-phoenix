@@ -171,29 +171,48 @@
 
                     <fieldset class="form-group">
 
-                        <div class="form-check">
+                        <div class="form-check" id= "Store_Select">
                             <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" checked> San José, CA 95192
-
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="option2"> San Francisco, CA 94102
-
-                            </label>
-                        </div>
-                        <div class="form-check disabled">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3"> Mountain View, CA 94043
-
-                            </label>
+                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="San Jose"> San Jose
+                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="San Francisco"> San Francisco
+                                <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="Mountain View"> Mountain View
+  
+                           </label>
                         </div>
                     </fieldset>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+
+                    <button type="button" class="btn btn-primary" onclick="setStore();">Save changes</button>
+
+                    <script type="text/javascript">
+
+                      function setStore(){
+
+                      if(document.getElementById('optionsRadios1').checked) {
+
+                        sessionStorage.setItem('storeLocation', 'San Jose');
+                        location.reload();
+
+                        }else if(document.getElementById('optionsRadios2').checked) {
+                          
+                          sessionStorage.setItem('storeLocation', 'San Francisco');
+                          location.reload();
+  
+                        }
+                        else if (document.getElementById('optionsRadios3').checked){
+
+                          sessionStorage.setItem("storeLocation", "Mountain View");
+                          slocation.reload();
+                        }
+                        $('#storeModal').appendTo("body").modal('hide');
+                      }
+
+                    </script>
+
+
                 </div>
             </div>
         </div>
