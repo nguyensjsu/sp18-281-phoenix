@@ -48,6 +48,19 @@ function getQuantity() {
   return parseInt(document.getElementById("quantity").value)
 }
 
+function getOptions() {
+	var options = ""
+	var elements = document.getElementsByTagName('input');
+  for (var i = 0; i < elements.length; i++ ) {
+      if (elements[i].type == 'checkbox') {
+				if (elements[i].checked == true) {
+          options += elements[i].value + ',';
+        }
+      }
+  }
+	return options.substring(0, options.length - 1);
+}
+
 $(document).on("click", ".open-orderDialog", function () {
      var id = $(this).data('id');
      var img = $(this).data('img');
@@ -83,14 +96,16 @@ function addToCart() {
   var id = document.getElementById("modal-title").value;
   var menu = document.getElementById("modal-title").textContent;
   var img = "images/" + document.getElementById("modal-img").src.split('/').pop();
+	var opt = getOptions()
   var quantity = getQuantity()
   var size = getSelectedSize()
   var price = document.getElementById("modal-price").textContent;
-
+	getOptions()
   var order = '{' +
      '"id":"' + id +'",' +
      '"menu":"' + menu + '",' +
      '"img":"' + img + '",' +
+		 '"opt":"' + opt + '",' +
      '"qty":"' + quantity + '",' +
      '"size":"' + size + '",' +
      '"price":"' + price + '"' +
