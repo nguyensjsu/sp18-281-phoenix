@@ -10,12 +10,12 @@
   <link rel="shortcut icon" href="images/starbucks_icon.ico" type="image/x-icon">
   <!-- Bootstrap -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link href="bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">  
-  <link href="css/style.css" rel="stylesheet">  
+  <link href="bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
 </head>
-<body>  
-  
+<body>
+
   <header >
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="js-header" style="max-height: 100px">
       <div class="container-fluid">
@@ -31,19 +31,19 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">    
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-brand">
-            <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>  
+            <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
             <li><a href="menu.html"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> Order</a></li>
-            <li><a href="status.html"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Status</a></li>  
-            <li><a href="locations.html"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Locations</a></li>  
+            <li><a href="status.html"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Status</a></li>
+            <li><a href="locations.html"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Locations</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> About Us <span class="caret"></span></a>
-              <ul class="dropdown-menu">      
-                <li><a href="#"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> About Us</a></li>      
-                <li><a href="contacts.html"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Contact Us</a></li>         
+              <ul class="dropdown-menu">
+                <li><a href="#"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> About Us</a></li>
+                <li><a href="contacts.html"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Contact Us</a></li>
               </ul>
-            </li>               
+            </li>
           </ul>
         </div><!-- /.navbar-collapse -->
          <div class="nav" style="padding-top: -20px">
@@ -53,7 +53,7 @@
     </nav>
   </header>
 
-  <div class="gap"></div>  
+  <div class="gap"></div>
   <div class="container">
     <div class="panel panel-default">
       <div class="panel-heading" align="center">
@@ -64,45 +64,87 @@
 
       <div class="panel-body">
 
-      
 
 
         <div class="row">
             <img src="images/blonde_caffe_latte.jpg" alt="blonde_caffe_latte" align="left" height="15%" width="15%"/>
             <p align ="center"><strong> Blonde Caffe Latte </strong> </p>
             <p align ="center">Our seriously smooth and subtly sweet Starbucks® Blonde Espresso is balanced with steamed milk and a light layer of foam.</p>
-            <button type="submit" align= "center" style="background-color:green">Place Order!</button>
+            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="1" data-img="images/blonde_caffe_latte.jpg" data-menu="Blonde Caffe Latte" data-target="#myModal" style="background-color:green">Select</button>
 
           </div>
 
 
 
-      <div class="row">
+        <div class="row">
             <img src="images/ice_beverage.jpg" alt="ice_beverage" align= "left" height="15%" width="15%"/>
             <p align = "center"><strong> Ice Beverage  </strong> </p>
             <p align="center">Made with the rich, full-bodied espresso you love that's been chilled and mellowed with a touch of milk and lightly sweetened, this drink is delightfully convenient.</p>
-            <button type="submit" align= "center" style="background-color:green">Place Order!</button>
+            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="2" data-img="images/ice_beverage.jpg" data-menu="Ice Beverage" data-target="#myModal" style="background-color:green">Select</button>
 
-      </div>
-
-
+        </div>
 
           <div class="row">
             <img src="images/Latte_Macchiato.jpg" alt="Latte_Macchiato"  align= "left" height="15%" width="15%"/>
             <p align="center"><strong> Latte Macchiato </strong></p>
             <p align="center">This espresso classic has espresso shots slowly poured over lightly aerated milk for a bold and roasty new way to sip.</p>
-            <button type="submit" align= "center" style="background-color:green;">Place Order!</button>
-          </div> 
+            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="3" data-img="images/Latte_Macchiato.jpg" data-menu="Latte Macchiato" data-target="#myModal" style="background-color:green">Select</button>
+          </div>
+
           <div class="row">
             <img src="images/strawberry_creme.jpg" alt="strawberry_creme"  align= "left" height="15%" width="15%"/>
             <p align = "center"><strong>Strawberry Creme</strong></p>
             <p align="center">Strawberries and milk are blended with ice and topped with a swirl of whipped cream. Sip on the crème of the crop.</p>
-            <button type="submit" align= "center" style="background-color:green" >Place Order!</button>
- 
+            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="4" data-img="images/strawberry_creme.jpg" data-menu="Strawberry Creme" data-target="#myModal" style="background-color:green" >Select</button>
+
           </div>
 		</div>
       </div>
-  
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h3 class="modal-title" id="modal-title" value="">Order</h3>
+            </div>
+            <div class="modal-body">
+              <img style="padding-right: 10px" src="" id="modal-img" align= "left" height="25%" width="25%"></img>
+              <div>
+                <h4>Options</h4>
+                <label style="padding-left: 30px" class="checkbox-inline"><input type="checkbox" value="">Whipped Cream</label>
+                <label class="checkbox-inline"><input type="checkbox" value="">Low Sugar</label>
+              </div>
+              <div>
+                <h4>Size</h4>
+                <label onchange="calculatePrice()" style="padding-left: 30px" class="radio-inline"><input id="radio-short" type="radio" name="optradio">Short</label>
+                <label onchange="calculatePrice()" class="radio-inline"><input id="radio-tall" type="radio" name="optradio" checked="true">Tall</label>
+                <label onchange="calculatePrice()" class="radio-inline"><input id="radio-grande" type="radio" name="optradio">Grande</label>
+              </div>
+              <div>
+                <h4>Quantity</h4>
+                <div class="input-group spinner">
+                  <input id="quantity" type="text" class="form-control" value="1">
+                    <div class="input-group-btn-vertical">
+                      <button class="btn btn-default" type="button"><i class="fas fa-caret-up"></i></button>
+                      <button class="btn btn-default" type="button"><i class="fas fa-caret-down"></i></button>
+                    </div>
+                  </input>
+                </div>
+              </div>
+              <div class="bottomright">
+                <h4>Price: $<span id="modal-price">0.00</span></h4>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button onclick="addToCart()" type="button" class="btn btn-default" data-dismiss="modal">Add to Cart</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
   <footer class="container-fluid">
     <div class="row">
         <img src="images/sjsu.png" alt="sjsu" class="img-responsive" />
@@ -112,13 +154,13 @@
           var d = new Date()
           document.write(d.getFullYear())
           </script> · CMPE 281- Team Hackathon Project · All Rights Reserved </p>
-    </div>        
+    </div>
   </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="storeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -157,16 +199,16 @@
         </div>
     </div>
 
-   
+
 
     <script>
         $(document).ready(function() {
             if (sessionStorage.getItem("storeLocation") == null) {
-                $('#myModal').appendTo("body").modal('show');
+                $('#storeModal').appendTo("body").modal('show');
             }
         });
     </script>
-    <script src="js/myscript.js"></script>  
+    <script src="js/myscript.js"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script>
       $(".panel-success").on('show.bs.collapse', function() {
