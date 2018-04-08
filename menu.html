@@ -113,8 +113,8 @@
               <img style="padding-right: 10px" src="" id="modal-img" align= "left" height="25%" width="25%"></img>
               <div id="modal-checkboxes">
                 <h4>Options</h4>
-                <label style="padding-left: 30px" class="checkbox-inline"><input type="checkbox" value="1">Whipped Cream</label>
-                <label class="checkbox-inline"><input type="checkbox" value="2">Low Sugar</label>
+                <label style="padding-left: 30px" class="checkbox-inline"><input type="checkbox" value="Whipped Cream">Whipped Cream</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Low Sugar">Low Sugar</label>
               </div>
               <div>
                 <h4>Size</h4>
@@ -176,7 +176,7 @@
                                 <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios1" value="San Jose"> San Jose
                                 <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="San Francisco"> San Francisco
                                 <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios3" value="Mountain View"> Mountain View
-  
+
                            </label>
                         </div>
                     </fieldset>
@@ -197,10 +197,10 @@
                         location.reload();
 
                         }else if(document.getElementById('optionsRadios2').checked) {
-                          
+
                           sessionStorage.setItem('storeLocation', 'San Francisco');
                           location.reload();
-  
+
                         }
                         else if (document.getElementById('optionsRadios3').checked){
 

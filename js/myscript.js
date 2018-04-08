@@ -39,9 +39,9 @@ function getBasePrice(id) {
 }
 
 function getSelectedSize() {
-  if(document.getElementById("radio-short").checked) return 1
-  if(document.getElementById("radio-tall").checked) return 2
-  if(document.getElementById("radio-grande").checked) return 3
+  if(document.getElementById("radio-short").checked) return "short"
+  if(document.getElementById("radio-tall").checked) return "tall"
+  if(document.getElementById("radio-grande").checked) return "grande"
 }
 
 function getQuantity() {
@@ -78,12 +78,12 @@ function calculatePrice() {
   var price = parseFloat(getBasePrice(id) * getQuantity(), 10)
   var size = getSelectedSize()
   switch (size) {
-    case 1:
+    case "short":
       price = price * 0.85
       break;
-    case 2:
+    case "tall":
       break;
-    case 3:
+    case "grande":
       price = price * 1.15
       break;
     default:
@@ -99,36 +99,38 @@ function addToCart() {
 	var opt = getOptions()
   var quantity = getQuantity()
   var size = getSelectedSize()
-  var price = document.getElementById("modal-price").textContent;
-	getOptions()
+  var price = (parseFloat(document.getElementById("modal-price").textContent) / parseFloat(quantity)).toFixed(2);
   var order = '{' +
      '"id":"' + id +'",' +
      '"menu":"' + menu + '",' +
      '"img":"' + img + '",' +
 		 '"opt":"' + opt + '",' +
-     '"qty":"' + quantity + '",' +
      '"size":"' + size + '",' +
      '"price":"' + price + '"' +
   '}'
   var orders = sessionStorage.getItem('orders');
-  if(orders == null) {
-    var orders = '{' +
-     '"orders":[' +
-        order +
-     ']' +
-    '}'
-  } else {
-    orders = JSON.parse(orders);
-    orders['orders'].push(JSON.parse(order));
+  if(orders != null) {
+		orders = JSON.parse(orders);
+		while(quantity > 0) {
+    	orders['orders'].push(JSON.parse(order));
+			quantity--;
+		}
     orders = JSON.stringify(orders);
+		console.log(JSON.parse(orders));
+		sessionStorage.setItem('orders', orders);
   }
-  console.log(JSON.parse(orders));
-  sessionStorage.setItem('orders', orders);
-  //
-  // var obj = JSON.parse(order);
-  // console.log(obj);
 }
 
+window.onload = function() {
+	var orders = sessionStorage.getItem('orders');
+  if(orders == null) {
+    var orders = '{' +
+     '"orders":[]' +
+    '}'
+		sessionStorage.setItem('orders', orders);
+		console.log(orders);
+	}
+};
 
 (function ($) {
   $('.spinner .btn:first-of-type').on('click', function() {
@@ -149,3 +151,5 @@ $('body').on('hidden.bs.modal', '.modal', function () {
   document.getElementById("quantity").value = 1
   $(this).removeData('bs.modal');
 });
+
+window.onload
