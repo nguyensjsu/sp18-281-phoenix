@@ -11,3 +11,7 @@ March 30, 2018
 
 April 2, 2018
 We read through the article: https://www.benefitfocus.com/blogs/design-engineering/architecture-cubed and began to decide the architecture which we are going to implement. Apart from that we decided to use NodeJS as part of our frontend which will be deployed on EC2 instances along with load balancer and auto scailing group.
+
+
+April 7, 2018
+We worked on the basic design html pages. We created the starbucks menu page and added the other features of qty and size while selecting the drink. Also implemented the logic for calculating the price and setting the store location.
