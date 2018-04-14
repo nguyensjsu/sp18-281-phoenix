@@ -15,3 +15,6 @@ We read through the article: https://www.benefitfocus.com/blogs/design-engineeri
 
 April 7, 2018
 We worked on the basic design html pages. We created the starbucks menu page and added the other features of qty and size while selecting the drink. Also implemented the logic for calculating the price and setting the store location.
+
+April 12, 2018
+We discussed about the backend requirement and what REST backend we should use. We have decided to build a go based REST API to use in this project.
