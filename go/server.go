@@ -76,6 +76,35 @@ func starbucksNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	}
 }
 
+// API Update starbucks Order
+func starbucksUpdateOrderHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+    	var m order
+    	_ = json.NewDecoder(req.Body).Decode(&m)		
+    	fmt.Println("Update Order To: ", m.CountGumballs)
+		session, err := mgo.Dial(mongodb_server)
+        if err != nil {
+                panic(err)
+        }
+        defer session.Close()
+        session.SetMode(mgo.Monotonic, true)
+        c := session.DB(mongodb_database).C(mongodb_collection)
+        query := bson.M{"Id" : m.id}
+        change := bson.M{"$set": bson.M{ "order" : m.order}}
+        err = c.Update(query, change)
+        if err != nil {
+                log.Fatal(err)
+        }
+       	var result bson.M
+        err = c.Find(bson.M{"Id" : m.id}).One(&result)
+        if err != nil {
+                log.Fatal(err)
+        }        
+        fmt.Println("Order:", result )
+		formatter.JSON(w, http.StatusOK, result)
+	}
+}
+
 // API Get Order Status
 func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
