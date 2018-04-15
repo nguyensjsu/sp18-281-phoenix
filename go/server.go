@@ -37,7 +37,9 @@ func NewServer() *negroni.Negroni {
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/starbucks", starbucksUpdateHandler(formatter)).Methods("PUT")
-    mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
+  mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
+	mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/order", starbucksOrderStatusHandler(formatter)).Methods("GET")
 }
 
 // Helper Functions
@@ -61,7 +63,7 @@ func starbucksNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		uuid := uuid.NewV4()
     	var ord = order {
-					Id: uuid.String(),            		
+					Id: uuid.String(),
 					OrderStatus: "Order Placed",
 		}
 		if orders == nil {
@@ -74,4 +76,24 @@ func starbucksNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	}
 }
 
-
+// API Get Order Status
+func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		params := mux.Vars(req)
+		var uuid string = params["id"]
+		fmt.Println("Order ID: ", uuid)
+		if uuid == "" {
+			fmt.Println("Orders:", orders)
+			var orders_array []order
+			for key, value := range orders {
+				fmt.Println("Key:", key, "Value:", value)
+				orders_array = append(orders_array, value)
+			}
+			formatter.JSON(w, http.StatusOK, orders_array)
+		} else {
+			var ord = orders[uuid]
+			fmt.Println("Order: ", ord)
+			formatter.JSON(w, http.StatusOK, ord)
+		}
+	}
+}
