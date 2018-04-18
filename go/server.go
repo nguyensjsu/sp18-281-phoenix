@@ -80,7 +80,7 @@ func starbucksNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 func starbucksUpdateOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
     	var m order
-    	_ = json.NewDecoder(req.Body).Decode(&m)		
+    	_ = json.NewDecoder(req.Body).Decode(&m)
     	fmt.Println("Update Order To: ", m.CountGumballs)
 		session, err := mgo.Dial(mongodb_server)
         if err != nil {
@@ -99,7 +99,7 @@ func starbucksUpdateOrderHandler(formatter *render.Render) http.HandlerFunc {
         err = c.Find(bson.M{"Id" : m.id}).One(&result)
         if err != nil {
                 log.Fatal(err)
-        }        
+        }
         fmt.Println("Order:", result )
 		formatter.JSON(w, http.StatusOK, result)
 	}
@@ -124,5 +124,19 @@ func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 			fmt.Println("Order: ", ord)
 			formatter.JSON(w, http.StatusOK, ord)
 		}
+	}
+}
+
+// API Process Orders
+func starbucksProcessOrdersHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		for key, value := range orders {
+			fmt.Println("Key:", key, "Value:", value)
+			var ord = orders[key]
+			ord.OrderStatus = "Order Processed"
+			orders[key] = ord
+		}
+		fmt.Println("Orders: ", orders)
+		formatter.JSON(w, http.StatusOK, "Orders Processed!")
 	}
 }
