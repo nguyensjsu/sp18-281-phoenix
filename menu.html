@@ -55,51 +55,46 @@
 
   <div class="gap"></div>
   <div class="container">
-    <div class="panel panel-default">
+    <div class="panel panel-default" style="display: inline-block;max-width: 80%;">
       <div class="panel-heading" align="center">
         <font size="6">Starbucks</font>
       </div>
 
-        <P align="left"><strong>General Menu</strong></p>
+      <P align="left"><strong>General Menu</strong></p>
 
       <div class="panel-body">
-
-
-
         <div class="row">
-            <img src="images/blonde_caffe_latte.jpg" alt="blonde_caffe_latte" align="left" height="15%" width="15%"/>
-            <p align ="center"><strong> Blonde Caffe Latte </strong> </p>
-            <p align ="center">Our seriously smooth and subtly sweet Starbucks® Blonde Espresso is balanced with steamed milk and a light layer of foam.</p>
-            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="1" data-img="images/blonde_caffe_latte.jpg" data-menu="Blonde Caffe Latte" data-target="#myModal" style="background-color:green">Select</button>
-
-          </div>
-
-
-
-        <div class="row">
-            <img src="images/ice_beverage.jpg" alt="ice_beverage" align= "left" height="15%" width="15%"/>
-            <p align = "center"><strong> Ice Beverage  </strong> </p>
-            <p align="center">Made with the rich, full-bodied espresso you love that's been chilled and mellowed with a touch of milk and lightly sweetened, this drink is delightfully convenient.</p>
-            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="2" data-img="images/ice_beverage.jpg" data-menu="Ice Beverage" data-target="#myModal" style="background-color:green">Select</button>
-
+          <img src="images/blonde_caffe_latte.jpg" alt="blonde_caffe_latte" align="left" height="15%" width="15%"/>
+          <p align ="center"><strong> Blonde Caffe Latte </strong> </p>
+          <p align ="center">Our seriously smooth and subtly sweet Starbucks® Blonde Espresso is balanced with steamed milk and a light layer of foam.</p>
+          <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="1" data-img="images/blonde_caffe_latte.jpg" data-menu="Blonde Caffe Latte" data-target="#myModal" style="background-color:green">Select</button>
         </div>
+        <div class="row">
+          <img src="images/ice_beverage.jpg" alt="ice_beverage" align= "left" height="15%" width="15%"/>
+          <p align = "center"><strong> Ice Beverage  </strong> </p>
+          <p align="center">Made with the rich, full-bodied espresso you love that's been chilled and mellowed with a touch of milk and lightly sweetened, this drink is delightfully convenient.</p>
+          <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="2" data-img="images/ice_beverage.jpg" data-menu="Ice Beverage" data-target="#myModal" style="background-color:green">Select</button>
+        </div>
+        <div class="row">
+          <img src="images/Latte_Macchiato.jpg" alt="Latte_Macchiato"  align= "left" height="15%" width="15%"/>
+          <p align="center"><strong> Latte Macchiato </strong></p>
+          <p align="center">This espresso classic has espresso shots slowly poured over lightly aerated milk for a bold and roasty new way to sip.</p>
+          <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="3" data-img="images/Latte_Macchiato.jpg" data-menu="Latte Macchiato" data-target="#myModal" style="background-color:green">Select</button>
+        </div>
+        <div class="row">
+          <img src="images/strawberry_creme.jpg" alt="strawberry_creme"  align= "left" height="15%" width="15%"/>
+          <p align = "center"><strong>Strawberry Creme</strong></p>
+          <p align="center">Strawberries and milk are blended with ice and topped with a swirl of whipped cream. Sip on the crème of the crop.</p>
+          <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="4" data-img="images/strawberry_creme.jpg" data-menu="Strawberry Creme" data-target="#myModal" style="background-color:green" >Select</button>
+        </div>
+		  </div>
+    </div>
 
-          <div class="row">
-            <img src="images/Latte_Macchiato.jpg" alt="Latte_Macchiato"  align= "left" height="15%" width="15%"/>
-            <p align="center"><strong> Latte Macchiato </strong></p>
-            <p align="center">This espresso classic has espresso shots slowly poured over lightly aerated milk for a bold and roasty new way to sip.</p>
-            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="3" data-img="images/Latte_Macchiato.jpg" data-menu="Latte Macchiato" data-target="#myModal" style="background-color:green">Select</button>
-          </div>
-
-          <div class="row">
-            <img src="images/strawberry_creme.jpg" alt="strawberry_creme"  align= "left" height="15%" width="15%"/>
-            <p align = "center"><strong>Strawberry Creme</strong></p>
-            <p align="center">Strawberries and milk are blended with ice and topped with a swirl of whipped cream. Sip on the crème of the crop.</p>
-            <button class="open-orderDialog" type="submit" align= "center" data-toggle="modal" data-id="4" data-img="images/strawberry_creme.jpg" data-menu="Strawberry Creme" data-target="#myModal" style="background-color:green" >Select</button>
-
-          </div>
-		</div>
-      </div>
+    <div style="display: inline-block;float: right;width: 200px;min-height: 400px;">
+      <h4 align="center" style="padding-bottom: 20px;">Cart</h4>
+      <p id="demo">test</p>
+      
+    </div>
 
       <!-- Modal -->
       <div class="modal fade" id="myModal" role="dialog">
@@ -225,6 +220,23 @@
             if (sessionStorage.getItem("storeLocation") == null) {
                 $('#storeModal').appendTo("body").modal('show');
             }
+
+            var txt = "";
+            var total = 0;
+            if (sessionStorage.getItem("orders") != null) {
+              obj = JSON.parse(sessionStorage.getItem("orders"));
+              txt += "<ol>";
+              for (x in obj.orders) {
+                var lineStr = obj.orders[x].menu +" X "+obj.orders[x].qty+" = "+obj.orders[x].price;
+                txt += "<li>" + lineStr + "</li>";
+                total += parseFloat(obj.orders[x].price);
+              }
+              txt += "</ol>"; 
+              txt += "total price = "+total.toFixed(2).toString();
+
+              document.getElementById("demo").innerHTML = txt;
+                //alert(obj.orders[0].menu);
+            }
         });
     </script>
     <script src="js/myscript.js"></script>
@@ -235,6 +247,8 @@
       }).on('hide.bs.collapse', function() {
         $('.buttonCon').removeClass('vis');
       })
+
+
     </script>
 </body>
 </html>
