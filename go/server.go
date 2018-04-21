@@ -37,8 +37,9 @@ func NewServer() *negroni.Negroni {
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/starbucks", starbucksUpdateHandler(formatter)).Methods("PUT")
-  mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
+  	mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("PUT")
 	mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/order/{id}", starbucksUpdateOrderHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/order", starbucksOrderStatusHandler(formatter)).Methods("GET")
 }
 
