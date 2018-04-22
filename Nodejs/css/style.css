@@ -1,0 +1,276 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  padding-top: 80px;
+}
+
+footer {
+  background-color: #333;
+  color: #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#twitter {
+  padding-right: 20px;
+}
+
+
+#thisCarousel {
+  padding: 40px;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 40%;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    font-size: 60px;
+    font-weight: 100;
+    line-height: 20px;
+    color: #ffffff;
+    text-align: center;
+    background: #222222;
+    border: 3px solid #ffffff;
+    -webkit-border-radius: 23px;
+    -moz-border-radius: 23px;
+    border-radius: 23px;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.carousel-caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 15px;
+    background: #333333;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.left.carousel-control{
+  left: 15px;
+}
+
+.right.carousel-control{
+  right: 15px;
+}
+
+
+#thisCarousel img {
+  text-align: center;
+  box-shadow: 6px 6px 8px #777;
+  margin-bottom: 20px;
+  height: 470px;
+  width:680px;
+}
+#thisCarousel p {
+  font-size: 16px;
+}
+
+
+/* The following code is used to create same-sized columns
+   in a multi-column layout.
+   Code from:
+   http://www.minimit.com/articles/solutions-tutorials/bootstrap-3-responsive-columns-of-same-height
+*/
+/* columns of same height styles */
+.container-xs-height {
+  display:table;
+  padding-left:0px;
+  padding-right:0px;
+}
+.row-xs-height {
+  display:table-row;
+}
+.col-xs-height {
+  display:table-cell;
+  float:none;
+}
+@media (min-width: 768px) {
+  .container-sm-height {
+    display:table;
+    padding-left:0px;
+    padding-right:0px;
+  }
+  .row-sm-height {
+    display:table-row;
+  }
+  .col-sm-height {
+    display:table-cell;
+    float:none;
+  }
+}
+@media (min-width: 992px) {
+    .container-md-height {
+        display:table;
+        padding-left:0px;
+        padding-right:0px;
+    }
+    .row-md-height {
+        display:table-row;
+    }
+    .col-md-height {
+        display:table-cell;
+        float:none;
+    }
+}
+@media (min-width: 1200px) {
+  .container-lg-height {
+    display:table;
+    padding-left:0px;
+    padding-right:0px;
+  }
+  .row-lg-height {
+    display:table-row;
+  }
+  .col-lg-height {
+    display:table-cell;
+    float:none;
+  }
+}
+
+
+
+/*MIO*/
+.navbar {
+  margin-bottom: 0px;
+  padding: 15px 15px;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+  color: #bbb;
+}
+
+nav {
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+nav.smaller.navbar {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  opacity: 0.9;
+}
+
+@media (max-width: 400px) {
+  .navbar-header {
+    position: relative;
+  }
+  .navbar img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 70%;
+  }
+}
+
+
+.img-responsive {
+  box-shadow: rgb(0,0,0,0.5) 10px 10px 60px;
+  display: block;
+  margin: auto;
+}
+
+.navbar-inverse {
+  background: #333;;
+}
+
+#copyright {
+  padding-top: 20px;
+}
+
+.gap { margin-top: 80px; }
+
+.panel-default > .panel-heading {
+  background-color: #036635;
+  color: white;
+}
+
+.imgContainer {
+  display:inline-block;
+}
+
+
+.panel{
+  position:relative;
+}
+.buttonCon{
+  position:absolute;
+  top:5px;
+  right:10px;
+  display:none;
+}
+.buttonCon.vis{
+  display:block;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal-body {
+    position: relative;
+    overflow-y: auto;
+    max-height: 400px;
+    padding: 15px;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.spinner {
+  width: 100px;
+}
+.spinner input {
+  text-align: right;
+}
+.input-group-btn-vertical {
+  position: relative;
+  white-space: nowrap;
+  width: 1%;
+  vertical-align: middle;
+  display: table-cell;
+}
+.input-group-btn-vertical > .btn {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px;
+  margin-left: -1px;
+  position: relative;
+  border-radius: 0;
+}
+.input-group-btn-vertical > .btn:first-child {
+  border-top-right-radius: 4px;
+}
+.input-group-btn-vertical > .btn:last-child {
+  margin-top: -2px;
+  border-bottom-right-radius: 4px;
+}
+.input-group-btn-vertical i{
+  position: absolute;
+  top: 0;
+  left: 4px;
+}
+
+.bottomright {
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    font-size: 18px;
+}
