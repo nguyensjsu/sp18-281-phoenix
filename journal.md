@@ -31,3 +31,9 @@ We worked on the basic design html pages. We created the starbucks menu page and
 ### April 18, 2018
 * tried connection GO with Dynomite on redis with 5 nodes
 * some testing still needed.
+
+### April 19, 2018
+* consulted with our final design with Pranav, the TA, and he has approved our design.
+
+### April 21, 2018
+* Presented our deployment strategy to Professor for achieving high AKF cube scaling but he has suggested few changes which we are considering making. 
