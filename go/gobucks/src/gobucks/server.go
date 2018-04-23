@@ -36,11 +36,12 @@ func NewServer() *negroni.Negroni {
 // API Routes
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/starbucks", starbucksUpdateHandler(formatter)).Methods("PUT")
-  	mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("PUT")
+  	mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/order/{id}", starbucksUpdateOrderHandler(formatter)).Methods("POST")
-	mx.HandleFunc("/order", starbucksOrderStatusHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/order/{id}", starbucksUpdateOrderHandler(formatter)).Methods("PUT")
+	mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/order/{id}", starbucksCancelOrderHandler(formatter)).Methods("DEL")
+	mx.HandleFunc("/order/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
 }
 
 // Helper Functions
@@ -130,6 +131,27 @@ func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 
 // API Process Orders
 func starbucksProcessOrdersHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		for key, value := range orders {
+			fmt.Println("Key:", key, "Value:", value)
+			var ord = orders[key]
+			ord.OrderStatus = "Order Processed"
+			orders[key] = ord
+		}
+		fmt.Println("Orders: ", orders)
+		formatter.JSON(w, http.StatusOK, "Orders Processed!")
+	}
+}
+
+// API Process Orders
+func starbucksCancelOrderHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		formatter.JSON(w, http.StatusOK, "Orders Cancelled!")
+	}
+}
+
+// API Process Orders
+func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		for key, value := range orders {
 			fmt.Println("Key:", key, "Value:", value)
