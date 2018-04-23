@@ -36,4 +36,16 @@ We worked on the basic design html pages. We created the starbucks menu page and
 * consulted with our final design with Pranav, the TA, and he has approved our design.
 
 ### April 21, 2018
-* Presented our deployment strategy to Professor for achieving high AKF cube scaling but he has suggested few changes which we are considering making. 
+* Presented our deployment strategy to Professor for achieving high AKF cube scaling but he has suggested few changes which we are considering making.
+
+### April 22, 2018
+* Have finalized which API we need to support to achive maximum efficiency and support AKF scaling.
+* url will be in the format of {store_location}/order to enable sharding.
+* the following API will be supported
+* Place Order: 		POST	- 	starbucks/order
+* Get order: 		GET 	- 	starbucks/order/order_id
+* Get orders:		GET 	- 	starbucks/orders
+* Delete order: 	DEL 	- 	starbucks/order/order_id
+* Update order: 	PUT 	- 	starbucks/order/order_id
+* Pay for order:	POST 	- 	starbucks/order/order_id/pay
+* making changes to the go backend accordingly.
