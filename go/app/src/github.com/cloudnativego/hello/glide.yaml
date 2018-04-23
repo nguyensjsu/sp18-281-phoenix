@@ -1,3 +1,0 @@
-package: github.com/cloudnativego/hello
-import:
-- package: github.com/codegangsta/negroni
