@@ -1,10 +1,16 @@
 package main
 
-
+import (
+	"github.com/go-redis/redis"
+)
 
 type order struct {
-	Id             	string 	
-	OrderStatus 	string	
+	Id						string
+	OrderName     string
+	Size					string
+	Options				string
+	Price        	string
+	OrderStatus 	string
 }
 
-var orders map[string] order
+var client *redis.Client

@@ -1,25 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"encoding/json"
-	"github.com/codegangsta/negroni"
-	"github.com/streadway/amqp"
+  "fmt"
+  "net/http"
+  "encoding/json"
+  "github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
-	"github.com/satori/go.uuid"
-	"gopkg.in/mgo.v2"
-    "gopkg.in/mgo.v2/bson"
+  "github.com/satori/go.uuid"
 )
-
-// MongoDB Config
-var mongodb_server = "mongodb"
-var mongodb_database = "cmpe281"
-var mongodb_collection = "starbucks"
-
-
 
 // NewServer configures and returns a Server.
 func NewServer() *negroni.Negroni {
@@ -33,77 +22,62 @@ func NewServer() *negroni.Negroni {
 	return n
 }
 
+func GetRedisServer() bool {
+  fmt.Println("Connecting to Redis server..")
+  client = NewRedisServer()
+
+  fmt.Println("PING")
+  pong, err := client.Ping().Result()
+  if err != nil {
+    fmt.Println("Could not connect to Redis server:", err)
+    return false
+  }
+
+  fmt.Println(pong)
+  return true
+}
+
 // API Routes
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
-  	mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
-	mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/order/{id}", starbucksUpdateOrderHandler(formatter)).Methods("PUT")
-	mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/order/{id}", starbucksCancelOrderHandler(formatter)).Methods("DEL")
-	mx.HandleFunc("/order/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
-}
-
-// Helper Functions
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
-	}
+  mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
+  mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
+  mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
 }
 
 // Starbucks API Ping Handler
 func pingHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		formatter.JSON(w, http.StatusOK, struct{ Test string }{" Starbucks API version 1.0 alive!"})
+		formatter.JSON(w, http.StatusOK, struct{ Ping string }{"Pong"})
 	}
 }
-
 
 // API Create New starbucks Order
 func starbucksNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		uuid := uuid.NewV4()
-    	var ord = order {
-					Id: uuid.String(),
-					OrderStatus: "Order Placed",
-		}
-		if orders == nil {
-			orders = make(map[string]order)
-		}
-		orders[uuid.String()] = ord
-		queue_send(uuid.String())
-		fmt.Println( "Orders: ", orders )
-		formatter.JSON(w, http.StatusOK, ord)
-	}
-}
+    var ord order
+    err := json.NewDecoder(req.Body).Decode(&ord)
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusBadRequest, err)
+      return
+    }
 
-// API Update starbucks Order
-func starbucksUpdateOrderHandler(formatter *render.Render) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-    	var m order
-    	_ = json.NewDecoder(req.Body).Decode(&m)
-    	fmt.Println("Update Order To: ", m.CountGumballs)
-		session, err := mgo.Dial(mongodb_server)
-        if err != nil {
-                panic(err)
-        }
-        defer session.Close()
-        session.SetMode(mgo.Monotonic, true)
-        c := session.DB(mongodb_database).C(mongodb_collection)
-        query := bson.M{"Id" : m.id}
-        change := bson.M{"$set": bson.M{ "order" : m.order}}
-        err = c.Update(query, change)
-        if err != nil {
-                log.Fatal(err)
-        }
-       	var result bson.M
-        err = c.Find(bson.M{"Id" : m.id}).One(&result)
-        if err != nil {
-                log.Fatal(err)
-        }
-        fmt.Println("Order:", result )
-		formatter.JSON(w, http.StatusOK, result)
+		uuid, _ := uuid.NewV4()
+    ord.Id = uuid.String()
+    ord.OrderStatus = "Order Placed"
+
+		fmt.Println( "Order:", ord )
+    key := ord.Id
+    value, _ := json.Marshal(ord)
+    err = client.Set(key, value, 0).Err()
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusInternalServerError, err)
+      return
+  	}
+
+		formatter.JSON(w, http.StatusOK, ord)
 	}
 }
 
@@ -112,54 +86,29 @@ func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		params := mux.Vars(req)
 		var uuid string = params["id"]
-		fmt.Println("Order ID: ", uuid)
 		if uuid == "" {
-			fmt.Println("Orders:", orders)
-			var orders_array []order
-			for key, value := range orders {
-				fmt.Println("Key:", key, "Value:", value)
+      keys := client.Keys("*")
+      if keys == nil {
+        fmt.Println("Order not found.")
+        formatter.JSON(w, http.StatusNotFound, nil)
+        return
+      }
+			var orders_array []string
+			for key, value := range keys.Val() {
+				fmt.Println("Key:", key, "Order:", value)
 				orders_array = append(orders_array, value)
 			}
 			formatter.JSON(w, http.StatusOK, orders_array)
 		} else {
-			var ord = orders[uuid]
+			var ord, err = client.Get(uuid).Result()
+      if err != nil {
+        fmt.Println("Order not found.")
+        formatter.JSON(w, http.StatusNotFound, err)
+        return
+      }
 			fmt.Println("Order: ", ord)
 			formatter.JSON(w, http.StatusOK, ord)
 		}
-	}
-}
-
-// API Process Orders
-func starbucksProcessOrdersHandler(formatter *render.Render) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		for key, value := range orders {
-			fmt.Println("Key:", key, "Value:", value)
-			var ord = orders[key]
-			ord.OrderStatus = "Order Processed"
-			orders[key] = ord
-		}
-		fmt.Println("Orders: ", orders)
-		formatter.JSON(w, http.StatusOK, "Orders Processed!")
-	}
-}
-
-// API Process Orders
-func starbucksCancelOrderHandler(formatter *render.Render) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		formatter.JSON(w, http.StatusOK, "Orders Cancelled!")
-	}
-}
-
-// API Process Orders
-func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		for key, value := range orders {
-			fmt.Println("Key:", key, "Value:", value)
-			var ord = orders[key]
-			ord.OrderStatus = "Order Processed"
-			orders[key] = ord
-		}
-		fmt.Println("Orders: ", orders)
-		formatter.JSON(w, http.StatusOK, "Orders Processed!")
-	}
+	 }
+ }
 }
