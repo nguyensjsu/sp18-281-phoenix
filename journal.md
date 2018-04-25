@@ -17,7 +17,7 @@ We read through the article: https://www.benefitfocus.com/blogs/design-engineeri
 We worked on the basic design html pages. We created the starbucks menu page and added the other features of qty and size while selecting the drink. Also implemented the logic for calculating the price and setting the store location.
 
 ### April 12, 2018
-* We discussed about the backend requirement and what REST backend we should use. 
+* We discussed about the backend requirement and what REST backend we should use.
 * We have decided to build a go based REST API to use in this project.
 
 
@@ -49,3 +49,6 @@ We worked on the basic design html pages. We created the starbucks menu page and
 * Update order: 	PUT 	- 	starbucks/order/order_id
 * Pay for order:	POST 	- 	starbucks/order/order_id/pay
 * making changes to the go backend accordingly.
+
+### April 23, 2018
+* Discussed with TA to get a clear picture of Y-axis scaling and how to apply it to our structure
