@@ -43,6 +43,8 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
   mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
   mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
   mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
+  mx.HandleFunc("/orders/{id}", starbucksCancelOrderHandler(formatter)).Methods("DEL")
+  mx.HandleFunc("/orders/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
 }
 
 // Starbucks API Ping Handler
@@ -110,5 +112,57 @@ func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.JSON(w, http.StatusOK, ord)
 		}
 	 }
+ }
+}
+
+// API Cancel Order
+func starbucksCancelOrderHandler(formatter *render.Render) http.HandlerFunc {
+  return func(w http.ResponseWriter, req *http.Request) {
+    params := mux.Vars(req)
+    var uuid string = params["id"]
+    var ord, err = client.Get(uuid).Result()
+    if err != nil {
+      fmt.Println("Order not found.")
+      formatter.JSON(w, http.StatusNotFound, err)
+      return
+    }
+    ord.OrderStatus = "Order Cancelled"
+    fmt.Println("Order: ", ord)
+    key := ord.Id
+    value, _ := json.Marshal(ord)
+    err = client.Del(key, 0).Err()
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusInternalServerError, err)
+      return
+    }
+    formatter.JSON(w, http.StatusOK, ord)
+   }
+ }
+}
+
+// API Pay for Order
+func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
+  return func(w http.ResponseWriter, req *http.Request) {
+    params := mux.Vars(req)
+    var uuid string = params["id"]
+    var ord, err = client.Get(uuid).Result()
+    if err != nil {
+      fmt.Println("Order not found.")
+      formatter.JSON(w, http.StatusNotFound, err)
+      return
+    }
+    ord.OrderStatus = "Payment recieved"
+    fmt.Println("Order: ", ord)
+    key := ord.Id
+    value, _ := json.Marshal(ord)
+    err = client.Set(key, value, 0).Err()
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusInternalServerError, err)
+      return
+    }
+    formatter.JSON(w, http.StatusOK, ord)
+   }
  }
 }
