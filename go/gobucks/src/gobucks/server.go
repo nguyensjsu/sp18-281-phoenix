@@ -45,6 +45,7 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
   mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
   mx.HandleFunc("/orders/{id}", starbucksCancelOrderHandler(formatter)).Methods("DEL")
   mx.HandleFunc("/orders/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
+  mx.HandleFunc("/order/{id}", starbucksUpdateHandler(formatter)).Methods("PUT")
 }
 
 // Starbucks API Ping Handler
@@ -166,3 +167,45 @@ func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
    }
  }
 }
+
+//API for update order
+func starbucksUpdateHandler (formatter *render.Render) http.HandlerFunc {
+    return func(w http.ResponseWriter, req *http.Request) {
+      params := mux.Vars(req)
+      var uuid string = params["id"]
+      var ord order
+      err := json.NewDecoder(req.Body).Decode(&ord)
+      if err != nil {
+                      fmt.Println(err)
+                      formatter.JSON(w, http.StatusInternalServerError, err)
+                      return
+                    }
+      if uuid == "" {
+                      keys := client.Keys("*")
+                      if keys == nil {
+                      fmt.Println("Order not found.")
+                      formatter.JSON(w, http.StatusNotFound, nil)
+                      return
+                                      }
+                    } else {
+                              var ord, err = client.Get(uuid).Result()
+                              if err != nil {
+                              fmt.Println("Order not found.")
+                              formatter.JSON(w, http.StatusNotFound, err)
+                              return
+                                            }
+                      fmt.Println("initial order: ", ord)
+                      //formatter.JSON(w, http.StatusOK, ord)
+                            }
+        ord.Id = uuid
+        ord.OrderStatus = "Order Processed"
+        key := ord.Id
+        value, _ := json.Marshal(ord)
+        err = client.Set(key, value, 0).Err()
+        fmt.Println("updated order: ", ord)
+        formatter.JSON(w, http.StatusOK, ord)
+  }
+}
+
+
+
