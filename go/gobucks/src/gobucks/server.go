@@ -198,7 +198,7 @@ func starbucksUpdateHandler (formatter *render.Render) http.HandlerFunc {
                       //formatter.JSON(w, http.StatusOK, ord)
                             }
         ord.Id = uuid
-        ord.OrderStatus = "Order Processed"
+        ord.OrderStatus = "Order updated"
         key := ord.Id
         value, _ := json.Marshal(ord)
         err = client.Set(key, value, 0).Err()
