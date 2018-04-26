@@ -52,3 +52,7 @@ We worked on the basic design html pages. We created the starbucks menu page and
 
 ### April 23, 2018
 * Discussed with TA to get a clear picture of Y-axis scaling and how to apply it to our structure
+
+### April 25, 2018
+* Deployed the frontend Node.js files on heroku
+* need to deploy the GO app in AWS to talk to the frontend. need a bit of testing
