@@ -1,94 +1,160 @@
 {
-	"info": {
-		"name": "Starbucks",
-		"_postman_id": "94e2b2e7-ffe9-b8dc-b6d4-856d2042e0d3",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
+	"id": "a7d1a259-b74a-472c-9beb-8c81c9fcd5d9",
+	"name": "Starbucks",
+	"description": null,
+	"auth": null,
+	"events": null,
+	"variables": null,
+	"order": [
+		"bf2a3263-8099-400f-9c17-de981e0177e0",
+		"a0052c10-baf1-4a36-b7d2-d12df8589490",
+		"5df6da91-6284-4062-afb5-60fd70baea94",
+		"d0b58a54-182a-460b-a8e0-895b1db103d1",
+		"704247c3-5174-4a04-af25-d2cd43eccf86",
+		"f8c557f0-8333-4748-b838-0bb5c3c83848",
+		"f1dfc33f-5a84-416f-a3ae-918d23c92bfe",
+		"a4cc1cfc-12d0-4d57-9150-87c45061d9de"
+	],
+	"folders_order": [],
+	"folders": [],
+	"requests": [
 		{
-			"name": "ping",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "localhost:3000/ping",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"ping"
-					]
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "placeOrder",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"OrderName\": \"White Chocolate Mocha\",\n\t\"Size\": \"Tall\",\n\t\"Options\": \"Whipped Cream\",\n\t\"Price\": \"$3.00\"\n}"
-				},
-				"url": {
-					"raw": "localhost:3000/order",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"order"
-					]
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
+			"id": "5df6da91-6284-4062-afb5-60fd70baea94",
 			"name": "getOrders",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "localhost:3000/orders",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"orders"
-					]
-				},
-				"description": ""
-			},
-			"response": []
+			"url": "localhost:3000/orders",
+			"description": null,
+			"data": [],
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
 		},
 		{
+			"id": "704247c3-5174-4a04-af25-d2cd43eccf86",
+			"name": "ERB - ping",
+			"url": "go-706035540.us-west-1.elb.amazonaws.com:3000",
+			"description": "",
+			"data": [],
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "a0052c10-baf1-4a36-b7d2-d12df8589490",
+			"name": "placeOrder",
+			"url": "localhost:3000/order",
+			"description": null,
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n\t\"OrderName\": \"White Chocolate Mocha\",\n\t\"Size\": \"Tall\",\n\t\"Options\": \"Whipped Cream\",\n\t\"Price\": \"$3.00\"\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "a4cc1cfc-12d0-4d57-9150-87c45061d9de",
+			"name": "Erb - getOrder",
+			"url": "go-706035540.us-west-1.elb.amazonaws.com:3000/order/6799530b-0f4c-47ee-9653-a9b639b99ba6",
+			"description": "",
+			"data": [],
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "bf2a3263-8099-400f-9c17-de981e0177e0",
+			"name": "ping",
+			"url": "localhost:3000/ping",
+			"description": null,
+			"data": [],
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "d0b58a54-182a-460b-a8e0-895b1db103d1",
 			"name": "getOrder",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "localhost:3000/order/6799530b-0f4c-47ee-9653-a9b639b99ba6",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"order",
-						"6799530b-0f4c-47ee-9653-a9b639b99ba6"
-					]
-				},
-				"description": ""
-			},
-			"response": []
+			"url": "localhost:3000/order/6799530b-0f4c-47ee-9653-a9b639b99ba6",
+			"description": null,
+			"data": [],
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "f1dfc33f-5a84-416f-a3ae-918d23c92bfe",
+			"name": "Erb - getOrders",
+			"url": "go-706035540.us-west-1.elb.amazonaws.com:3000/orders",
+			"description": "",
+			"data": [],
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "f8c557f0-8333-4748-b838-0bb5c3c83848",
+			"name": "ERB - placeOrder",
+			"url": "go-706035540.us-west-1.elb.amazonaws.com:3000/order",
+			"description": "",
+			"data": [],
+			"dataMode": "raw",
+			"headerData": [],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
+			"rawModeData": "{\n\t\"OrderName\": \"White Chocolate Mocha\",\n\t\"Size\": \"Tall\",\n\t\"Options\": \"Whipped Cream\",\n\t\"Price\": \"$3.00\"\n}",
+			"headers": "",
+			"pathVariables": {}
 		}
 	]
 }
