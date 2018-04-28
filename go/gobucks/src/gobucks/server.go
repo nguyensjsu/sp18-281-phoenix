@@ -43,8 +43,8 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
   mx.HandleFunc("/order", starbucksNewOrderHandler(formatter)).Methods("POST")
   mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
   mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
-  mx.HandleFunc("/orders/{id}", starbucksCancelOrderHandler(formatter)).Methods("DEL")
-  mx.HandleFunc("/orders/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
+  mx.HandleFunc("/order/{id}", starbucksCancelOrderHandler(formatter)).Methods("DELETE")
+  //mx.HandleFunc("/orders/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
   mx.HandleFunc("/order/{id}", starbucksUpdateHandler(formatter)).Methods("PUT")
 }
 
@@ -112,8 +112,7 @@ func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 			fmt.Println("Order: ", ord)
 			formatter.JSON(w, http.StatusOK, ord)
 		}
-	 }
- }
+	}
 }
 
 // API Cancel Order
@@ -127,23 +126,19 @@ func starbucksCancelOrderHandler(formatter *render.Render) http.HandlerFunc {
       formatter.JSON(w, http.StatusNotFound, err)
       return
     }
-    ord.OrderStatus = "Order Cancelled"
-    fmt.Println("Order: ", ord)
-    key := ord.Id
     value, _ := json.Marshal(ord)
-    err = client.Del(key, 0).Err()
+    err = client.Del(uuid).Err()
     if err != nil {
       fmt.Println(err)
       formatter.JSON(w, http.StatusInternalServerError, err)
       return
     }
-    formatter.JSON(w, http.StatusOK, ord)
-   }
- }
+    formatter.JSON(w, http.StatusOK, value)
+  }
 }
 
 // API Pay for Order
-func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
+/*func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
   return func(w http.ResponseWriter, req *http.Request) {
     params := mux.Vars(req)
     var uuid string = params["id"]
@@ -164,9 +159,8 @@ func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
       return
     }
     formatter.JSON(w, http.StatusOK, ord)
-   }
- }
-}
+  }
+}*/
 
 //API for update order
 func starbucksUpdateHandler (formatter *render.Render) http.HandlerFunc {
