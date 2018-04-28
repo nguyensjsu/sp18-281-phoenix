@@ -44,7 +44,7 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
   mx.HandleFunc("/order/{id}", starbucksOrderStatusHandler(formatter)).Methods("GET")
   mx.HandleFunc("/orders", starbucksOrderStatusHandler(formatter)).Methods("GET")
   mx.HandleFunc("/order/{id}", starbucksCancelOrderHandler(formatter)).Methods("DELETE")
-  //mx.HandleFunc("/orders/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
+  mx.HandleFunc("/order/{id}/pay", starbucksPayForOrderHandler(formatter)).Methods("POST")
   mx.HandleFunc("/order/{id}", starbucksUpdateHandler(formatter)).Methods("PUT")
 }
 
@@ -58,7 +58,7 @@ func pingHandler(formatter *render.Render) http.HandlerFunc {
 // API Create New starbucks Order
 func starbucksNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-    var ord order
+    var ord Order
     err := json.NewDecoder(req.Body).Decode(&ord)
     if err != nil {
       fmt.Println(err)
@@ -110,7 +110,9 @@ func starbucksOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
         return
       }
 			fmt.Println("Order: ", ord)
-			formatter.JSON(w, http.StatusOK, ord)
+      var order Order
+      json.Unmarshal([]byte(ord), &order)
+			formatter.JSON(w, http.StatusOK, order)
 		}
 	}
 }
@@ -126,19 +128,21 @@ func starbucksCancelOrderHandler(formatter *render.Render) http.HandlerFunc {
       formatter.JSON(w, http.StatusNotFound, err)
       return
     }
-    value, _ := json.Marshal(ord)
+    var order Order
+    json.Unmarshal([]byte(ord), &order)
     err = client.Del(uuid).Err()
     if err != nil {
       fmt.Println(err)
       formatter.JSON(w, http.StatusInternalServerError, err)
       return
     }
-    formatter.JSON(w, http.StatusOK, value)
+    order.OrderStatus = "Order Cancelled"
+    formatter.JSON(w, http.StatusOK, order)
   }
 }
 
 // API Pay for Order
-/*func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
+func starbucksPayForOrderHandler(formatter *render.Render) http.HandlerFunc {
   return func(w http.ResponseWriter, req *http.Request) {
     params := mux.Vars(req)
     var uuid string = params["id"]
@@ -148,26 +152,27 @@ func starbucksCancelOrderHandler(formatter *render.Render) http.HandlerFunc {
       formatter.JSON(w, http.StatusNotFound, err)
       return
     }
-    ord.OrderStatus = "Payment recieved"
-    fmt.Println("Order: ", ord)
-    key := ord.Id
-    value, _ := json.Marshal(ord)
+    var order Order
+    json.Unmarshal([]byte(ord), &order)
+    order.OrderStatus = "Payment recieved"
+    key := order.Id
+    value, _ := json.Marshal(order)
     err = client.Set(key, value, 0).Err()
     if err != nil {
       fmt.Println(err)
       formatter.JSON(w, http.StatusInternalServerError, err)
       return
     }
-    formatter.JSON(w, http.StatusOK, ord)
+    formatter.JSON(w, http.StatusOK, order)
   }
-}*/
+}
 
 //API for update order
 func starbucksUpdateHandler (formatter *render.Render) http.HandlerFunc {
     return func(w http.ResponseWriter, req *http.Request) {
       params := mux.Vars(req)
       var uuid string = params["id"]
-      var ord order
+      var ord Order
       err := json.NewDecoder(req.Body).Decode(&ord)
       if err != nil {
                       fmt.Println(err)

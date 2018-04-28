@@ -4,14 +4,14 @@ import (
 	"github.com/go-redis/redis"
 )
 
-type order struct {
+type Order struct {
 	Id						string
-	Items     []item
+	Items     []Item
 	TotalPrice        	string
 	OrderStatus 	string
 }
 
-type item struct {
+type Item struct {
 	Drink			string
 	Size					string
 	Options				string
