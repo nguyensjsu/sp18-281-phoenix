@@ -56,3 +56,11 @@ We worked on the basic design html pages. We created the starbucks menu page and
 ### April 25, 2018
 * Deployed the frontend Node.js files on heroku
 * need to deploy the GO app in AWS to talk to the frontend. need a bit of testing
+
+### April 27, 2018
+* deployed Go application with load balancer on my vpc
+* Frontend was able to talk to backend
+
+### April 28, 2018
+* Discussed further with the professor about our deployment architecture and he suggested few modifications to achieve higher level of AKF scaling
+* We need to seperate our micro services and have them running together on different VPCs.
