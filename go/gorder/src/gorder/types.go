@@ -6,17 +6,16 @@ import (
 
 type Order struct {
 	Id						string
-	Items     []Item
-	TotalPrice        	string
+	Items     		[]Item
+	TotalPrice    string
 	OrderStatus 	string
 }
 
 type Item struct {
 	Drink			string
-	Size					string
-	Options				string
-	Price        	string
-	Quantity     int
+	Size			string
+	Options		string
+	Price     string
 }
 
 var client *redis.Client
