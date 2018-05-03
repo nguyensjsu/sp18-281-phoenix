@@ -49,6 +49,15 @@ app.post('/setStore', function(req, res) {
   res.redirect('/locations.html');
 });
 
+app.post('/cart', function(req, res) {
+  client.put( machine, args,
+    function(data, response_raw) {
+      console.log(data);
+      jsdata = JSON.parse(data)
+      console.log( "count after = " + jsdata.CountGumballs ) ;
+      });
+});
+
 var handle_get = function (req, res) {
     page( req, res, "San Jose" ) ;
 }
