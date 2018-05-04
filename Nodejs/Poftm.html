@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <!-- mata tag below make the page responsive on mobile devices-->
+      <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
+      <meta name="twitter:widgets:theme" content="dark">
+      <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <title>Product</title>
+      <link rel="shortcut icon" href="images/starbucks_icon.ico" type="image/x-icon">
+      <!-- Bootstrap -->
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+      <link href="bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+      <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+      <script type="text/javascript" src="http://www.turnjs.com/lib/turn.min.js "></script>
+      <meta charset="utf-8">
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src = 'js/prod.js'></script>
+      <title>Sample Page</title>
+      <!-- <script src="product.js"></script>
+         -->
+   </head>
+   <body>
+      <div class="container">
+         <div id="result" style="color:red"></div>
+      </div>
+      <header >
+         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="js-header" style="max-height: 100px">
+            <div class="container-fluid">
+               <!-- Brand and toggle get grouped for better mobile display -->
+               <div class="nav navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  </button>
+                  <a href="#top"><img class="" src="images/starbucks.png" width="10%" height="10%" style="margin: 10px;"/></a>
+               </div>
+               <!-- Collect the nav links, forms, and other content for toggling -->
+               <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav navbar-brand">
+                     <li><a href="index.html"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
+                     <li><a href="menu.html"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> Order</a></li>
+                     <li><a href="status.html"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> Status</a></li>
+                     <li><a href="locations.html"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Locations</a></li>
+                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> About Us <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                           <li><a href="#"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> About Us</a></li>
+                           <li><a href="contacts.html"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Contact Us</a></li>
+                        </ul>
+                     </li>
+                  </ul>
+               </div>
+               <!-- /.navbar-collapse -->
+               <div class="nav" style="padding-top: -20px">
+                  <font id="selected_store" size="1" style="color: white;float: right;">My Store: Not Selected</font>
+               </div>
+            </div>
+            <!-- /.container-fluid -->
+         </nav>
+      </header>
+      <div class="gap"></div>
+      <div class="container">
+         <div class="panel panel-default">
+            <div class="panel-heading" align="center">
+               <font size="6">Starbucks</font>
+               <font size="4"><i>Top Products of the Month</i></font>
+            </div>
+            <h1 align="center" ><i>  </i></h1>
+         </div>
+      </div>
+      </div>       
+      </div>
+      <div align="center">
+         <button align= "center" type="button" class="btn btn-success" id="fetch" onclick="fetchDetails()">List Top Items</button>
+      </div>
+      <div id="display" align="center">
+      </div>
+      <footer class="container-fluid">
+         <div class="row">
+            <img src="images/sjsu.png" alt="sjsu" class="img-responsive" />
+         </div>
+         <div class="row">
+            <p id="copyright">
+               Copyright © <script type="text/javascript">
+                  var d = new Date();
+                  //document.write(d.getFullYear()); 
+               </script> · CMPE 281- Team Hackathon Project · All Rights Reserved 
+            </p>
+         </div>
+      </footer>
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="bootstrap-3.3.7/js/bootstrap.min.js"></script>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+   </body>
+</html>
