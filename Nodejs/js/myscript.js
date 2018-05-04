@@ -92,6 +92,28 @@ function calculatePrice() {
   document.getElementById("modal-price").textContent = price;
 }
 
+function updateOrder() {
+	var order = '{' +
+     '"Drink":"' + menu +'",' +
+     '"Size":"' + size + '",' +
+     '"Options":"' + opt + '",' +
+		 '"Price":' + price + ',' +
+     '"Quantity":' + quantity +
+  '}'
+}
+
+function deleteOrder() {
+	var id = document.getElementById("modal-title").innerHTML.split(" ")[2];
+	var addr = "/order/" + id
+	$.ajax({
+      url: addr,
+      type: "DELETE",
+			success: function (data) {
+				window.location.replace("/status.html");
+			}
+  });
+}
+
 
 function addToCart() {
   var id = document.getElementById("modal-title").value;
@@ -163,7 +185,9 @@ window.onload = function() {
 })(jQuery);
 
 $('body').on('hidden.bs.modal', '.modal', function () {
-  $(":checkbox").prop('checked', false)
+	if(!window.location.href.includes("order.html")) {
+		$(":checkbox").prop('checked', false)
+	}
   document.getElementById("radio-tall").checked = true
   document.getElementById("quantity").value = 1
   $(this).removeData('bs.modal');

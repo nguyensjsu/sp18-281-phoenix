@@ -27,13 +27,13 @@ function processOrderPage(orderPage, id) {
   var orderTemplate = fs.readFileSync("./templates/order.template", 'utf8');
   var itemTemplate = fs.readFileSync("./templates/item.template", 'utf8');
   var order = getOrder(id)
-  orderTemplate = orderTemplate.replace("${orderID}", order.Id)
+  orderTemplate = orderTemplate.replaceAll("${orderID}", order.Id)
   orderTemplate = orderTemplate.replace("${totalPrice}", order.TotalPrice)
 
   var items = ""
   for (var i = 0; i < order.Items.length; i++ ) {
     var item = itemTemplate
-    item = item.replace("${image}", "images/blonde_caffe_latte.jpg")
+    item = item.replace("${image}", getImage(order.Items[i].Drink))
     item = item.replace("${drink}", order.Items[i].Drink)
     item = item.replace("${price}", order.Items[i].Price)
 
@@ -85,4 +85,17 @@ function classify(page) {
 
 function extractData(page) {
   return page.split("?")[1].split("=")[1]
+}
+
+function getImage(drink) {
+  switch(drink) {
+    case "Blonde Caffe Latte":
+      return "images/blonde_caffe_latte.jpg"
+    case "Ice Beverage":
+      return "images/ice_beverage.jpg"
+    case "Latte Macchiato":
+      return "images/Latte_Macchiato.jpg"
+    case "Strawberry Creme":
+      return "images/strawberry_creme.jpg"
+  }
 }

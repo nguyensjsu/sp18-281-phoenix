@@ -2,7 +2,7 @@
   <div class="row">
     <img style="padding-right: 10px" src="${image}" id="modal-img" align= "left" height="25%" width="25%"></img>
     <div>
-      <h4>${drink}</h4>
+      <h4 id="drink">${drink}</h4>
       <br>
     </div>
     <div id="modal-checkboxes">

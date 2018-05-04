@@ -8,6 +8,8 @@ Version 1.0
 var machine = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/cart";
 var endpoint = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/cart";
 
+var orderEndpoint = "http://ec2-user@ec2-52-52-199-60.us-west-1.compute.amazonaws.com:3000/";
+
 var fs = require('fs');
 var express = require('express');
 var Client = require('node-rest-client').Client;
@@ -113,6 +115,14 @@ app.post('/getCart/:cartId', function(req, res) {
 var handle_get = function (req, res) {
     page( req, res, "San Jose" ) ;
 }
+
+app.delete('/order/:orderId', function(req, res) {
+  var client = new Client();
+  client.delete(orderEndpoint + "order/" + req.params.orderId, function (data, response) {
+    console.log(data);
+    res.send(data)
+  });
+});
 
 app.set('port', (process.env.PORT || 3000));
 
