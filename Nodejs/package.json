@@ -8,5 +8,8 @@
     "express": "^3.21.2",
     "fs": "0.0.2",
     "node-rest-client": "^1.4.1"
+  },
+  "devDependencies": {
+    "ws": "3.3.2"
   }
 }

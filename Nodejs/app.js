@@ -5,6 +5,8 @@ Version 1.0
 
 **/
 
+var machine = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/cart";
+var endpoint = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/cart";
 
 var fs = require('fs');
 var express = require('express');
@@ -50,12 +52,61 @@ app.post('/setStore', function(req, res) {
 });
 
 app.post('/cart', function(req, res) {
-  client.put( machine, args,
+  var client = new Client();
+
+  var args = {
+    data: {"Items": [{
+    "Drink": req.body.Drink,
+    "Size": req.body.Size,
+    "Options": req.body.Options,
+    "Price": parseFloat(req.body.Price),
+    "Quantity":parseInt(req.body.Quantity, 10)}]
+  },
+    headers: { "Content-Type": "application/json" }};
+  client.post( machine, args,
     function(data, response_raw) {
       console.log(data);
-      jsdata = JSON.parse(data)
-      console.log( "count after = " + jsdata.CountGumballs ) ;
+      req.session.cartId = data.Id;
+      console.log('cookie created successfully');
+      res.send(data);
       });
+});
+
+app.put('/cart/:cartId', function(req, res) {
+  var client = new Client();
+  client.get(machine+"/"+req.params.cartId, function (data, response) {
+    // parsed response body as js object
+    var cart = JSON.parse(data);
+    console.log(cart.Items);
+    cart.Items.push({
+    "Drink": req.body.Drink,
+    "Size": req.body.Size,
+    "Options": req.body.Options,
+    "Price": parseFloat(req.body.Price),
+    "Quantity":parseInt(req.body.Quantity, 10)});
+    
+
+    var args = {
+    data: {"Items": cart.Items},
+    headers: { "Content-Type": "application/json" }};
+  client.put( machine+"/"+req.params.cartId, args,
+    function(data, response_raw) {
+      console.log(data);
+      res.send(data);
+      });
+    
+  });
+
+});
+
+app.post('/getCart/:cartId', function(req, res) {
+  var client = new Client();
+  client.get(machine+"/"+req.params.cartId, function (data, response) {
+    // parsed response body as js object
+    var cart = JSON.parse(data);
+    console.log(cart.Items);
+    res.send(cart);
+  });
 });
 
 var handle_get = function (req, res) {

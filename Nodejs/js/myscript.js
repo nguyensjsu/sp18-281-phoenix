@@ -101,12 +101,11 @@ function addToCart() {
   var size = getSelectedSize()
   var price = (parseFloat(document.getElementById("modal-price").textContent) / parseFloat(quantity)).toFixed(2);
   var order = '{' +
-     '"id":"' + id +'",' +
-     '"menu":"' + menu + '",' +
-     '"img":"' + img + '",' +
-		 '"opt":"' + opt + '",' +
-     '"size":"' + size + '",' +
-     '"price":"' + price + '"' +
+     '"Drink":"' + menu +'",' +
+     '"Size":"' + size + '",' +
+     '"Options":"' + opt + '",' +
+		 '"Price":' + price + ',' +
+     '"Quantity":' + quantity + 
   '}'
   var orders = sessionStorage.getItem('orders');
   if(orders != null) {
@@ -119,6 +118,23 @@ function addToCart() {
 		console.log(JSON.parse(orders));
 		sessionStorage.setItem('orders', orders);
   }
+
+  var addr = '/cart';
+  var callType = 'post'
+  if (sessionStorage.getItem("cartId") != null) {
+          addr += "/"+sessionStorage.getItem("cartId"); 
+          callType = 'put';     
+      }
+  $.ajax({
+            url: addr,
+            type: callType,
+            dataType: 'json',
+            success: function (data) {
+                sessionStorage.setItem('cartId', data.Id);
+                location.reload();
+            },
+            data: JSON.parse(order)
+        });
 }
 
 window.onload = function() {

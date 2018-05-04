@@ -217,25 +217,32 @@
 
     <script>
         $(document).ready(function() {
-            if (sessionStorage.getItem("storeLocation") == null) {
-                $('#storeModal').appendTo("body").modal('show');
-            }
+          if (sessionStorage.getItem("storeLocation") == null) {
+            $('#storeModal').appendTo("body").modal('show');
+          }
 
             var txt = "";
-            var total = 0;
-            if (sessionStorage.getItem("orders") != null) {
-              obj = JSON.parse(sessionStorage.getItem("orders"));
-              txt += "<ol>";
-              for (x in obj.orders) {
-                var lineStr = obj.orders[x].menu +" X "+obj.orders[x].qty+" = "+obj.orders[x].price;
-                txt += "<li>" + lineStr + "</li>";
-                total += parseFloat(obj.orders[x].price);
-              }
-              txt += "</ol>"; 
-              txt += "total price = "+total.toFixed(2).toString();
-
-              document.getElementById("demo").innerHTML = txt;
-                //alert(obj.orders[0].menu);
+            if (sessionStorage.getItem("cartId") != null) {
+              $.ajax({
+                url: '/getCart/'+sessionStorage.getItem("cartId"),
+                type: 'post',
+                success: function (data) {
+                       
+                  txt += "<ol>";
+                  for (x in data.Items)
+                  {
+                    var lineStr = data.Items[x].Drink +" X "+data.Items[x].Quantity+" = "+data.Items[x].Quantity*data.Items[x].Price.toFixed(2);
+                    txt += "<li>" + lineStr + "</li>";
+                  }
+                  txt += "</ol>"; 
+                  txt += "total price = "+data.TotalPrice.toFixed(2).toString();
+                  document.getElementById("demo").innerHTML = txt;
+                }
+              });
+              //alert(txt);
+            }
+            else {
+              document.getElementById("demo").innerHTML = "Cart is Empty";
             }
         });
     </script>

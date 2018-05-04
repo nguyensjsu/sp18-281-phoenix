@@ -135,6 +135,13 @@ func updateCartHandler(formatter *render.Render) http.HandlerFunc {
     crt = cart
     crt.Id = uuid
     crt.Status = "Cart Updated"
+    
+    totalPrice := float64(0)
+    for _, num := range crt.Items {
+      totalPrice += float64(num.Price * float64(num.Quantity))
+    }
+    crt.TotalPrice = totalPrice
+
     fmt.Println( "Cart:", crt )
 
     key := crt.Id
