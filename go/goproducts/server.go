@@ -39,10 +39,11 @@ func GetRedisServer() bool {
 
 // API Routes
 func initRoutes(mx *mux.Router, formatter *render.Render) {
-  mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
-  mx.HandleFunc("/product", starbucksNewProductHandler(formatter)).Methods("POST")
+  mx.HandleFunc("/", pingHandler(formatter)).Methods("GET")
+  mx.HandleFunc("/product", starbucksCreateProductHandler(formatter)).Methods("POST")
   mx.HandleFunc("/product/{id}", starbucksProductDetailsHandler(formatter)).Methods("GET")
-  mx.HandleFunc("/product/{id}", starbucksProductUpdateHandler(formatter)).Methods("PUT")
+  mx.HandleFunc("/products", starbucksProductDetailsHandler(formatter)).Methods("GET")
+  mx.HandleFunc("/product/{id}", starbucksDeleteProductHandler(formatter)).Methods("DELETE")
 }
 
 // Starbucks API Ping Handler
@@ -52,10 +53,10 @@ func pingHandler(formatter *render.Render) http.HandlerFunc {
   }
 }
 
-// API Create New starbucks Product
-func starbucksNewProductHandler(formatter *render.Render) http.HandlerFunc {
+// API Create Order
+func starbucksCreateProductHandler(formatter *render.Render) http.HandlerFunc {
   return func(w http.ResponseWriter, req *http.Request) {
-    var prd order
+    var prd product
     err := json.NewDecoder(req.Body).Decode(&prd)
     if err != nil {
       fmt.Println(err)
@@ -65,7 +66,7 @@ func starbucksNewProductHandler(formatter *render.Render) http.HandlerFunc {
 
     uuid, _ := uuid.NewV4()
     prd.Id = uuid.String()
-  
+    
 
     fmt.Println( "Product:", prd )
     key := prd.Id
@@ -81,7 +82,7 @@ func starbucksNewProductHandler(formatter *render.Render) http.HandlerFunc {
   }
 }
 
-// API Get Product Details 
+// API Read Order(s)
 func starbucksProductDetailsHandler(formatter *render.Render) http.HandlerFunc {
   return func(w http.ResponseWriter, req *http.Request) {
     params := mux.Vars(req)
@@ -89,69 +90,55 @@ func starbucksProductDetailsHandler(formatter *render.Render) http.HandlerFunc {
     if uuid == "" {
       keys := client.Keys("*")
       if keys == nil {
-        fmt.Println("Product not found.")
-        formatter.JSON(w, http.StatusNotFound, nil)
+        fmt.Println("Product not found")
+        formatter.JSON(w, http.StatusOK, nil)
         return
       }
-      var prod_array []string
-      for key, value := range keys.Val() {
-        fmt.Println("Key:", key, "Product:", value)
-        prod_array = append(prod_array, value)
+      var products []product
+      for _, value := range keys.Val() {
+        var p product
+        var prd, err = client.Get(value).Result()
+        if err != nil {
+          continue
+        }
+        fmt.Println("Product details:", prd)
+        json.Unmarshal([]byte(prd), &p)
+        products = append(products, p)
       }
-      formatter.JSON(w, http.StatusOK, prod_array)
+      formatter.JSON(w, http.StatusOK, products)
     } else {
+      var p product
       var prd, err = client.Get(uuid).Result()
       if err != nil {
-        fmt.Println("product not found.")
-        formatter.JSON(w, http.StatusNotFound, err)
+        fmt.Println("Order not found")
+        formatter.JSON(w, http.StatusOK, nil)
         return
       }
-      fmt.Println("Product: ", prd)
+      fmt.Println("Product details:", prd)
+      json.Unmarshal([]byte(prd), &p)
       formatter.JSON(w, http.StatusOK, prd)
     }
-   }
- }
-
-
-
-//API for update Product
-func starbucksProductUpdateHandler (formatter *render.Render) http.HandlerFunc {
-    return func(w http.ResponseWriter, req *http.Request) {
-      params := mux.Vars(req)
-      var uuid string = params["id"]
-      var prd order
-      err := json.NewDecoder(req.Body).Decode(&prd)
-      if err != nil {
-                      fmt.Println(err)
-                      formatter.JSON(w, http.StatusInternalServerError, err)
-                      return
-                    }
-      if uuid == "" {
-                      keys := client.Keys("*")
-                      if keys == nil {
-                      fmt.Println("Product not found.")
-                      formatter.JSON(w, http.StatusNotFound, nil)
-                      return
-                                      }
-                    } else {
-                              var prd, err = client.Get(uuid).Result()
-                              if err != nil {
-                              fmt.Println("Product not found.")
-                              formatter.JSON(w, http.StatusNotFound, err)
-                              return
-                                            }
-                      fmt.Println("initial Details: ", prd)
-                      //formatter.JSON(w, http.StatusOK, ord)
-                            }
-        prd.Id = uuid
-        
-        key := prd.Id
-        value, _ := json.Marshal(prd)
-        err = client.Set(key, value, 0).Err()
-        fmt.Println("updated Details: ", prd)
-        formatter.JSON(w, http.StatusOK, prd)
   }
 }
 
+// API Delete products
+func starbucksDeleteProductHandler(formatter *render.Render) http.HandlerFunc {
+  return func(w http.ResponseWriter, req *http.Request) {
+    params := mux.Vars(req)
+    var uuid string = params["id"]
+    var _, err = client.Get(uuid).Result()
+    if err != nil {
+      fmt.Println("Product not found")
+      formatter.JSON(w, http.StatusOK, err)
+      return
+    }
 
-
+    err = client.Del(uuid).Err()
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusInternalServerError, err)
+      return
+    }
+    formatter.JSON(w, http.StatusOK, "OK")
+  }
+}
