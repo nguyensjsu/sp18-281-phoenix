@@ -12,6 +12,7 @@ var fs = require('fs');
 var express = require('express');
 var Client = require('node-rest-client').Client;
 var session = require('client-sessions');
+var tailor = require('./tailor.js');
 
 var app = express();
 app.use(express.bodyParser());
@@ -29,7 +30,7 @@ var page = function( req, res, location ) {
     res.setHeader('Content-Type', 'text/html');
     var body = 'not found'
     try {
-      body = fs.readFileSync('.' + url);
+      body = tailor.getPage(url);
       res.writeHead(200);
     } catch(err) {
       res.writeHead(404);
@@ -84,7 +85,7 @@ app.put('/cart/:cartId', function(req, res) {
     "Options": req.body.Options,
     "Price": parseFloat(req.body.Price),
     "Quantity":parseInt(req.body.Quantity, 10)});
-    
+
 
     var args = {
     data: {"Items": cart.Items},
@@ -94,7 +95,7 @@ app.put('/cart/:cartId', function(req, res) {
       console.log(data);
       res.send(data);
       });
-    
+
   });
 
 });

@@ -1,0 +1,23 @@
+<div class="modal-body">
+  <div class="row">
+    <img style="padding-right: 10px" src="${image}" id="modal-img" align= "left" height="25%" width="25%"></img>
+    <div>
+      <h4>${drink}</h4>
+      <br>
+    </div>
+    <div id="modal-checkboxes">
+      <h4>Options</h4>
+      <label style="padding-left: 30px" class="checkbox-inline"><input type="checkbox" value="Whipped Cream" id=${wid} ${whipped}>Whipped Cream</label>
+      <label class="checkbox-inline"><input type="checkbox" value="Low Sugar" id=${sid} ${low}>Low Sugar</label>
+    </div>
+    <div>
+      <h4>Size</h4>
+      <label onchange="calculatePrice()" style="padding-left: 30px" class="radio-inline"><input id=${rsid} type="radio" name=${optname} ${short}>Short</label>
+      <label onchange="calculatePrice()" class="radio-inline"><input id=${rtid} type="radio" name=${optname} ${tall}>Tall</label>
+      <label onchange="calculatePrice()" class="radio-inline"><input id=${rgid} type="radio" name=${optname} ${grande}>Grande</label>
+    </div>
+    <div class="bottomright">
+      <h4>Price: <span id="modal-price">${price}</span></h4>
+    </div>
+  </div>
+</div>

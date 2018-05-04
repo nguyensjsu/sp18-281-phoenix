@@ -92,6 +92,7 @@ function calculatePrice() {
   document.getElementById("modal-price").textContent = price;
 }
 
+
 function addToCart() {
   var id = document.getElementById("modal-title").value;
   var menu = document.getElementById("modal-title").textContent;
@@ -105,7 +106,7 @@ function addToCart() {
      '"Size":"' + size + '",' +
      '"Options":"' + opt + '",' +
 		 '"Price":' + price + ',' +
-     '"Quantity":' + quantity + 
+     '"Quantity":' + quantity +
   '}'
   var orders = sessionStorage.getItem('orders');
   if(orders != null) {
@@ -122,8 +123,8 @@ function addToCart() {
   var addr = '/cart';
   var callType = 'post'
   if (sessionStorage.getItem("cartId") != null) {
-          addr += "/"+sessionStorage.getItem("cartId"); 
-          callType = 'put';     
+          addr += "/"+sessionStorage.getItem("cartId");
+          callType = 'put';
       }
   $.ajax({
             url: addr,
