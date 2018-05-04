@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/codegangsta/negroni"
+  //"log"
+  "net/http"
+  "encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/unrolled/render"
-	"net/http"
-	"log"
-	"github.com/go-redis/redis"
+  "github.com/satori/go.uuid"
+  "github.com/unrolled/render"
+  "github.com/codegangsta/negroni"
 )
 
 // Init Background Processes
@@ -15,22 +16,39 @@ func init() {
 
 }
 
-func NewRedisServer() *redis.Client {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "13.56.224.231:8102",
-		Password: "",
-		DB:       0,  // use default DB
-	})
+// NewServer configures and returns a Server.
+func NewServer() *negroni.Negroni {
+  formatter := render.New(render.Options{
+    IndentJSON: true,
+  })
+  n := negroni.Classic()
+  mx := mux.NewRouter()
+  initRoutes(mx, formatter)
+  n.UseHandler(mx)
+  return n
+}
 
-  return client
+func GetRedisServer() bool {
+  fmt.Println("Connecting to Redis server..")
+  client = NewRedisServer()
+
+  fmt.Println("PING")
+  pong, err := client.Ping().Result()
+  if err != nil {
+    fmt.Println("Could not connect to Redis server:", err)
+    return false
+  }
+
+  fmt.Println(pong)
+  return true
 }
 
 // API Routes
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/cart", newCartHandler(formatter)).Methods("PUT")
+	mx.HandleFunc("/cart", newCartHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/cart/{id}", getCartHandler(formatter)).Methods("GET")
-	mx.HandleFunc("/cart/{id}", UpdateCartHandler(formatter)).Methods("POST")
+	mx.HandleFunc("/cart/{id}", updateCartHandler(formatter)).Methods("PUT")
 	mx.HandleFunc("/cart/{id}", removeCartHandler(formatter)).Methods("DELETE")
 }
 
@@ -40,23 +58,6 @@ func pingHandler(formatter *render.Render) http.HandlerFunc {
 		formatter.JSON(w, http.StatusOK, struct{ Test string }{"API works!"})
 	}
 }
-
-// API redis Handler
-/*func redHandler(formatter *render.Render) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		conn, err := redis.Dial("tcp", "ec2-54-183-158-59.us-west-1.compute.amazonaws.com:8102")
-   	client = NewRedisServer()
-
-	err = client.Set(params["id"], params["value"], 0).Err()
-    if err != nil {
-      fmt.Println(err)
-      formatter.JSON(w, http.StatusInternalServerError, err)
-      return
-  	}
-
-		formatter.JSON(w, http.StatusOK, "key inserted.")
-	}
-}*/
 
 // API Create New starbucks Cart
 func newCartHandler(formatter *render.Render) http.HandlerFunc {
@@ -69,11 +70,17 @@ func newCartHandler(formatter *render.Render) http.HandlerFunc {
       return
     }
 
-	uuid, _ := uuid.NewV4()
+	 uuid, _ := uuid.NewV4()
     crt.Id = uuid.String()
     crt.Status = "Added New Cart"
 
-	fmt.Println( "Cart:", crt )
+    totalPrice := float64(0)
+    for _, num := range crt.Items {
+      totalPrice += float64(num.Price * float64(num.Quantity))
+    }
+    crt.TotalPrice = totalPrice
+
+	 fmt.Println( "Cart:", crt )
     key := crt.Id
     value, _ := json.Marshal(crt)
     err = client.Set(key, value, 0).Err()
@@ -82,28 +89,64 @@ func newCartHandler(formatter *render.Render) http.HandlerFunc {
       formatter.JSON(w, http.StatusInternalServerError, err)
       return
   	}
-
 		formatter.JSON(w, http.StatusOK, crt)
 	}
 }
 
 // API Get Order Status
 func getCartHandler(formatter *render.Render) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		params := mux.Vars(req)
+  return func(w http.ResponseWriter, req *http.Request) {
+    params := mux.Vars(req)
 		var uuid string = params["id"]
 		var crt, err = client.Get(uuid).Result()
-	      if err != nil {
-	        fmt.Println("Cart not found.")
-	        formatter.JSON(w, http.StatusNotFound, err)
-	        return
-	      }
-			fmt.Println("Cart: ", crt)
-      var cart Cart
-      json.Unmarshal([]byte(crt), &cart)
-			formatter.JSON(w, http.StatusOK, cart)
-		}
+	  if err != nil {
+      fmt.Println("Cart not found.")
+	    formatter.JSON(w, http.StatusNotFound, err)
+	    return
+	  }
+		fmt.Println("Cart: ", crt)
+    var cart Cart
+    json.Unmarshal([]byte(crt), &cart)
+		formatter.JSON(w, http.StatusOK, cart)
 	}
+}
+
+func updateCartHandler(formatter *render.Render) http.HandlerFunc {
+  return func(w http.ResponseWriter, req *http.Request) {
+    params := mux.Vars(req)
+    var uuid string = params["id"]
+    var result, err = client.Get(uuid).Result()
+    if err != nil {
+      fmt.Println("Cart not found")
+      formatter.JSON(w, http.StatusOK, err)
+      return
+    }
+    var crt Cart
+    json.Unmarshal([]byte(result), &crt)
+
+    var cart Cart
+    err = json.NewDecoder(req.Body).Decode(&cart)
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusBadRequest, err)
+      return
+    }
+
+    crt = cart
+    crt.Id = uuid
+    crt.Status = "Cart Updated"
+    fmt.Println( "Cart:", crt )
+
+    key := crt.Id
+    value, _ := json.Marshal(crt)
+    err = client.Set(key, value, 0).Err()
+    if err != nil {
+      fmt.Println(err)
+      formatter.JSON(w, http.StatusInternalServerError, err)
+      return
+    }
+    formatter.JSON(w, http.StatusOK, crt)
+  }
 }
 
 // API delete cart

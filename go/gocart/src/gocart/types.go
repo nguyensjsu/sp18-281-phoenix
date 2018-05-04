@@ -7,7 +7,7 @@ import (
 type Cart struct {
 	Id						string
 	Items     []Item
-	TotalPrice        	string
+	TotalPrice        	float64
 	Status 	string
 }
 
@@ -15,7 +15,7 @@ type Item struct {
 	Drink			string
 	Size					string
 	Options				string
-	Price        	string
+	Price        	float64
 	Quantity     int
 }
 

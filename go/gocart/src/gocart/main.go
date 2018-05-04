@@ -12,5 +12,7 @@ func main() {
 	}
 
 	server := NewServer()
-	server.Run(":" + port)
+  if GetRedisServer() {
+	   server.Run(":" + port)
+  }
 }
