@@ -231,20 +231,49 @@
                   txt += "<ol>";
                   for (x in data.Items)
                   {
-                    var lineStr = data.Items[x].Drink +" X "+data.Items[x].Quantity+" = "+data.Items[x].Quantity*data.Items[x].Price.toFixed(2);
+                    var lineStr = data.Items[x].Drink +" X "+data.Items[x].Quantity+" = $"+data.Items[x].Quantity*data.Items[x].Price.toFixed(2);
                     txt += "<li>" + lineStr + "</li>";
+                    txt += '<a href="#" onclick="removeItem('+x+');">Remove</a>';
                   }
                   txt += "</ol>"; 
-                  txt += "total price = "+data.TotalPrice.toFixed(2).toString();
+                  txt += "total price = $"+data.TotalPrice.toFixed(2).toString();
+                  //txt += "<div>" ;
                   document.getElementById("demo").innerHTML = txt;
+
+                  var x = document.createElement("BUTTON");
+                  var t = document.createTextNode("Place Order");
+                  x.appendChild(t);
+                  x.onclick = function() 
+                  { 
+                    //place Order api call 
+                  };
+                  document.getElementById("demo").appendChild(x);
+
+                  var x = document.createElement("BUTTON");
+                  var t = document.createTextNode("Remove Cart");
+                  x.appendChild(t);
+                  x.onclick = function() 
+                  { 
+                    $.ajax({
+                        url: '/cart/'+sessionStorage.getItem("cartId"),
+                        type: 'DELETE',
+                        success: function(result) {
+                            sessionStorage.removeItem("cartId");
+                            location.reload();
+                        }
+                    });
+                  };
+                  document.getElementById("demo").appendChild(x);
                 }
               });
-              //alert(txt);
             }
             else {
               document.getElementById("demo").innerHTML = "Cart is Empty";
             }
         });
+        function removeItem(x){
+          //data.Items.remove(x);
+        }
     </script>
     <script src="js/myscript.js"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

@@ -124,6 +124,16 @@ app.delete('/order/:orderId', function(req, res) {
   });
 });
 
+app.delete('/cart/:cartId', function(req, res) {
+  var client = new Client();
+  client.delete(machine+"/"+req.params.cartId, function (data, response) {
+    // parsed response body as js object
+    var cart = JSON.parse(data);
+    console.log(cart);
+    res.send(cart);
+  });
+});
+
 app.set('port', (process.env.PORT || 3000));
 
 // app.post("*", handle_post );
