@@ -64,3 +64,9 @@ We worked on the basic design html pages. We created the starbucks menu page and
 ### April 28, 2018
 * Discussed further with the professor about our deployment architecture and he suggested few modifications to achieve higher level of AKF scaling
 * We need to seperate our micro services and have them running together on different VPCs.
+
+### May 02 , 2018
+Discussed the pending tasks and the follow through actions to be taken due to some changes in the basic design strategy. Decided to meet on 3rd and 4th to complete the remaining tasks.
+
+## May 03, 2018
+Worked on individual go apis and completed the front end.
