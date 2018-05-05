@@ -2,11 +2,12 @@
 
 Starbucks, Inc.
 Version 1.0
-
+endpoints will be different for different VPCs
 **/
 
 var machine = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/";
 var cartendpoint = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/";
+var productendpoint = "http://ec2-54-241-198-25.us-west-1.compute.amazonaws.com:3000/products"
 
 var orderEndpoint = "http://ec2-user@ec2-52-52-199-60.us-west-1.compute.amazonaws.com:3000/";
 
@@ -131,6 +132,19 @@ app.delete('/cart/:cartId', function(req, res) {
     var cart = JSON.parse(data);
     console.log(cart);
     res.send(cart);
+  });
+});
+
+
+
+
+app.post('/products', function(req, res) {
+  var client = new Client();
+  client.get(productendpoint+"/"+req.body.StoreLocation+"/products/", function (data, response) {
+    // parsed response body as js object
+    var cart = JSON.parse(data);
+    console.log(data);
+    res.send(data);
   });
 });
 

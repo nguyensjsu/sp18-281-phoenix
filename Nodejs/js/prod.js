@@ -3,7 +3,7 @@
 
 function fetchDetails(){
 
-$.get( "http://ec2-54-241-198-25.us-west-1.compute.amazonaws.com:3000/products", function( data ) {
+$.get( '/products', function( data ) {
 console.log(data);
 
  var txt = "";
