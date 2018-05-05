@@ -128,7 +128,8 @@ function addToCart() {
      '"Size":"' + size + '",' +
      '"Options":"' + opt + '",' +
 		 '"Price":' + price + ',' +
-     '"Quantity":' + quantity +
+     '"Quantity":' + quantity + ',' +
+     '"StoreLocation":' + sessionStorage.getItem("storeLocation")+
   '}'
   var orders = sessionStorage.getItem('orders');
   if(orders != null) {

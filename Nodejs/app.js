@@ -5,8 +5,8 @@ Version 1.0
 
 **/
 
-var machine = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/cart";
-var endpoint = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/cart";
+var machine = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/";
+var cartendpoint = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/";
 
 var orderEndpoint = "http://ec2-user@ec2-52-52-199-60.us-west-1.compute.amazonaws.com:3000/";
 
@@ -66,7 +66,7 @@ app.post('/cart', function(req, res) {
     "Quantity":parseInt(req.body.Quantity, 10)}]
   },
     headers: { "Content-Type": "application/json" }};
-  client.post( machine, args,
+  client.post(cartendpoint+"/"+req.body.StoreLocation+"/cart"+, args,
     function(data, response_raw) {
       console.log(data);
       req.session.cartId = data.Id;
@@ -92,7 +92,7 @@ app.put('/cart/:cartId', function(req, res) {
     var args = {
     data: {"Items": cart.Items},
     headers: { "Content-Type": "application/json" }};
-  client.put( machine+"/"+req.params.cartId, args,
+  client.put( cartendpoint+"/"+req.body.StoreLocation+"/cart/"+req.params.cartId, args,
     function(data, response_raw) {
       console.log(data);
       res.send(data);
@@ -104,7 +104,7 @@ app.put('/cart/:cartId', function(req, res) {
 
 app.post('/getCart/:cartId', function(req, res) {
   var client = new Client();
-  client.get(machine+"/"+req.params.cartId, function (data, response) {
+  client.get(cartendpoint+"/"+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
     // parsed response body as js object
     var cart = JSON.parse(data);
     console.log(cart.Items);
@@ -126,7 +126,7 @@ app.delete('/order/:orderId', function(req, res) {
 
 app.delete('/cart/:cartId', function(req, res) {
   var client = new Client();
-  client.delete(machine+"/"+req.params.cartId, function (data, response) {
+  client.delete(cartendpoint+"/"+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
     // parsed response body as js object
     var cart = JSON.parse(data);
     console.log(cart);
