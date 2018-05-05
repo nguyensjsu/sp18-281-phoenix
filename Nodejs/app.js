@@ -4,7 +4,7 @@ Starbucks, Inc.
 Version 1.0
 endpoints will be different for different VPCs
 **/
-
+//these addresses will be different for different VPC
 var machine = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/";
 var cartendpoint = "http://ec2-13-57-59-79.us-west-1.compute.amazonaws.com:3000/";
 var productendpoint = "http://ec2-54-241-198-25.us-west-1.compute.amazonaws.com:3000/products"
@@ -67,7 +67,7 @@ app.post('/cart', function(req, res) {
     "Quantity":parseInt(req.body.Quantity, 10)}]
   },
     headers: { "Content-Type": "application/json" }};
-  client.post(cartendpoint+"/"+req.body.StoreLocation+"/cart"+, args,
+  client.post(cartendpoint+req.body.StoreLocation+"/cart", args,
     function(data, response_raw) {
       console.log(data);
       req.session.cartId = data.Id;
@@ -78,40 +78,50 @@ app.post('/cart', function(req, res) {
 
 app.put('/cart/:cartId', function(req, res) {
   var client = new Client();
-  client.get(machine+"/"+req.params.cartId, function (data, response) {
-    // parsed response body as js object
-    var cart = JSON.parse(data);
-    console.log(cart.Items);
-    cart.Items.push({
-    "Drink": req.body.Drink,
-    "Size": req.body.Size,
-    "Options": req.body.Options,
-    "Price": parseFloat(req.body.Price),
-    "Quantity":parseInt(req.body.Quantity, 10)});
+  if( req.body.AddOne!=null && req.body.AddOne)
+  {
+    client.get(cartendpoint+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
+      // parsed response body as js object
+      var cart = JSON.parse(data);
+      console.log(cart.Items);
+      cart.Items.push({
+      "Drink": req.body.Drink,
+      "Size": req.body.Size,
+      "Options": req.body.Options,
+      "Price": parseFloat(req.body.Price),
+      "Quantity":parseInt(req.body.Quantity, 10)});
 
-
-    var args = {
-    data: {"Items": cart.Items},
-    headers: { "Content-Type": "application/json" }};
-  client.put( cartendpoint+"/"+req.body.StoreLocation+"/cart/"+req.params.cartId, args,
-    function(data, response_raw) {
-      console.log(data);
-      res.send(data);
-      });
-
-  });
-
+      cart_put(req, res, cart.Items);
+    });
+  }
+  else
+  {
+    cart_put(req, res, req.body);
+  }
 });
 
 app.post('/getCart/:cartId', function(req, res) {
   var client = new Client();
-  client.get(cartendpoint+"/"+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
+  client.get(cartendpoint+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
     // parsed response body as js object
     var cart = JSON.parse(data);
-    console.log(cart.Items);
+    console.log(cartendpoint+"cart/"+req.params.cartId);
     res.send(cart);
   });
 });
+
+var cart_put = function (req, res, items) {
+    var client = new Client();
+  console.log(items);
+    var args = {
+    data: {"Items": items},
+    headers: { "Content-Type": "application/json" }};
+  client.put( cartendpoint+req.body.StoreLocation+"/cart/"+req.params.cartId, args,
+    function(data, response_raw) {
+      console.log(data);
+      res.send(data);
+      });
+}
 
 var handle_get = function (req, res) {
     page( req, res, "San Jose" ) ;
@@ -127,7 +137,7 @@ app.delete('/order/:orderId', function(req, res) {
 
 app.delete('/cart/:cartId', function(req, res) {
   var client = new Client();
-  client.delete(cartendpoint+"/"+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
+  client.delete(cartendpoint+req.body.StoreLocation+"/cart/"+req.params.cartId, function (data, response) {
     // parsed response body as js object
     var cart = JSON.parse(data);
     console.log(cart);

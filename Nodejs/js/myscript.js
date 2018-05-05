@@ -129,8 +129,9 @@ function addToCart() {
      '"Options":"' + opt + '",' +
 		 '"Price":' + price + ',' +
      '"Quantity":' + quantity + ',' +
-     '"StoreLocation":' + sessionStorage.getItem("storeLocation")+
-  '}'
+     '"AddOne":' + true + ',' +
+     '"StoreLocation":"' + sessionStorage.getItem("storeLocation").replace(/\s/g, "")+
+  '"}';
   var orders = sessionStorage.getItem('orders');
   if(orders != null) {
 		orders = JSON.parse(orders);

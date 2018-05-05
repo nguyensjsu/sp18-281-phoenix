@@ -92,7 +92,7 @@
 
     <div style="display: inline-block;float: right;width: 200px;min-height: 400px;">
       <h4 align="center" style="padding-bottom: 20px;">Cart</h4>
-      <p id="demo">test</p>
+      <p id="demo">Cart is Empty</p>
       
     </div>
 
@@ -216,6 +216,7 @@
 
 
     <script>
+      var cartData = [];
         $(document).ready(function() {
           if (sessionStorage.getItem("storeLocation") == null) {
             $('#storeModal').appendTo("body").modal('show');
@@ -227,13 +228,13 @@
                 url: '/getCart/'+sessionStorage.getItem("cartId"),
                 type: 'post',
                 success: function (data) {
-                       
+                       cartData = data.Items;
                   txt += "<ol>";
                   for (x in data.Items)
                   {
                     var lineStr = data.Items[x].Drink +" X "+data.Items[x].Quantity+" = $"+data.Items[x].Quantity*data.Items[x].Price.toFixed(2);
                     txt += "<li>" + lineStr + "</li>";
-                    txt += '<a href="#" onclick="removeItem('+x+');">Remove</a>';
+                    //txt += '<a href="#" onclick="removeItem('+x+');">Remove</a>';
                   }
                   txt += "</ol>"; 
                   txt += "total price = $"+data.TotalPrice.toFixed(2).toString();
@@ -257,10 +258,12 @@
                     $.ajax({
                         url: '/cart/'+sessionStorage.getItem("cartId"),
                         type: 'DELETE',
+                        dataType: 'json',
                         success: function(result) {
                             sessionStorage.removeItem("cartId");
                             location.reload();
-                        }
+                        },
+                        data:{storeLocation:sessionStorage.getItem("storeLocation").replace(/\s/g, "")}
                     });
                   };
                   document.getElementById("demo").appendChild(x);
@@ -272,7 +275,20 @@
             }
         });
         function removeItem(x){
-          //data.Items.remove(x);
+          if(cartData.length > 0){
+              cartData.splice(x, 1);
+          }
+          
+              $.ajax({
+            url: "/cart/updateAll"+sessionStorage.getItem("cartId"),
+            type: "put",
+            dataType: 'json',
+            success: function (data) {
+                sessionStorage.setItem('cartId', data.Id);
+                location.reload();
+            },
+            data: cartData
+            });
         }
     </script>
     <script src="js/myscript.js"></script>
