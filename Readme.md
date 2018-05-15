@@ -1,4 +1,4 @@
-# Project Name: Startbucks Online Application
+# Project Name: Starbucks Online Application
 
 ## CMPE 281 Team - Phoenix
 
